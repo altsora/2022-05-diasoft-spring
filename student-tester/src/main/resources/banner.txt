@@ -1,0 +1,7 @@
+${AnsiColor.RED}     ___       __      .___________.${AnsiColor.CYAN}    _______.  ______   .______          ___
+${AnsiColor.RED}    /   \     |  |     |           |${AnsiColor.CYAN}   /       | /  __  \  |   _  \        /   \
+${AnsiColor.RED}   /  ^  \    |  |     `---|  |----`${AnsiColor.CYAN}  |   (----`|  |  |  | |  |_)  |      /  ^  \
+${AnsiColor.RED}  /  /_\  \   |  |         |  |     ${AnsiColor.CYAN}   \   \    |  |  |  | |      /      /  /_\  \
+${AnsiColor.RED} /  _____  \  |  `----.    |  |    ${AnsiColor.CYAN}.----)   |   |  `--'  | |  |\  \----./  _____  \
+${AnsiColor.RED}/__/     \__\ |_______|    |__|    ${AnsiColor.CYAN}|_______/     \______/  | _| `._____/__/     \__\
+${AnsiColor.DEFAULT}

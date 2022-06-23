@@ -1,0 +1,16 @@
+testing:
+  locale: en
+  file:
+    name: questions-test.csv
+    separator: ';'
+  min-correct-answers: 1
+  min-questions: 2
+
+spring:
+  shell:
+    interactive:
+      enabled: false
+    script:
+      spring:
+        shell:
+          script: false

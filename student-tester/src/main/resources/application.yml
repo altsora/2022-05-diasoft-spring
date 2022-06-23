@@ -1,0 +1,7 @@
+testing:
+  locale: ru
+  file:
+    name: questions_ru.csv
+    separator: ';'
+  min-correct-answers: 3
+  min-questions: 5
