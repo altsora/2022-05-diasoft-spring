@@ -9,6 +9,4 @@ public interface AuthorDao {
     List<Author> findAll();
 
     Optional<Author> findById(Long id);
-
-    String getFullName(Author author);
 }

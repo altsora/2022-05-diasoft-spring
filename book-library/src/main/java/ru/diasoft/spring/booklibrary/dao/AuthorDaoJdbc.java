@@ -34,9 +34,4 @@ public class AuthorDaoJdbc implements AuthorDao {
             return Optional.empty();
         }
     }
-
-    @Override
-    public String getFullName(Author author) {
-        return author.getLastName() + " " + author.getFirstName();
-    }
 }

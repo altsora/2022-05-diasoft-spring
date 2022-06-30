@@ -37,4 +37,9 @@ public class AuthorServiceImpl implements AuthorService {
 
         return "Автор с ID " + authorId + " не найден";
     }
+
+    @Override
+    public String getFullName(Author author) {
+        return author.getLastName() + " " + author.getFirstName();
+    }
 }

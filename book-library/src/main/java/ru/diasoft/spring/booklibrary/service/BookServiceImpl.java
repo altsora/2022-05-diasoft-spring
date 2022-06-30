@@ -19,6 +19,8 @@ public class BookServiceImpl implements BookService {
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
+    private final AuthorService authorService;
+
     @Override
     public String getBooksInfo() {
         final List<Book> books = bookDao.findAll();
@@ -48,7 +50,7 @@ public class BookServiceImpl implements BookService {
                     (i + 1),
                     book.getId(),
                     book.getTitle(),
-                    authorDao.getFullName(author),
+                    authorService.getFullName(author),
                     genre.getName());
             sb.append(row).append("\n");
         }
@@ -66,7 +68,7 @@ public class BookServiceImpl implements BookService {
             return String.format("ID: %d, название: %s, автор: %s, жанр: %s",
                     bookId,
                     book.getTitle(),
-                    authorDao.getFullName(author),
+                    authorService.getFullName(author),
                     genre.getName());
         }
         return "Книга с ID " + bookId + " не найдена";
