@@ -8,3 +8,15 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  shell:
+    interactive:
+      enabled: true
+    script:
+      spring:
+        shell:
+          script: true
