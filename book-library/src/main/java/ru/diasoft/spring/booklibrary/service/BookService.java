@@ -9,7 +9,7 @@ public interface BookService {
 
     String getBookInfo(Long bookId);
 
-    int getNumberOfBooks();
+    long getNumberOfBooks();
 
     void deleteBook(Long bookId);
 

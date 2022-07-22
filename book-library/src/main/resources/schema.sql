@@ -23,3 +23,12 @@ CREATE TABLE book
     foreign key (author_id) references author (id),
     foreign key (genre_id) references genre (id)
 );
+
+DROP TABLE IF EXISTS book_comment;
+CREATE TABLE book_comment
+(
+    id      INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT          NOT NULL,
+    text    VARCHAR(500) NOT NULL,
+    foreign key (book_id) references book (id) ON DELETE CASCADE
+)

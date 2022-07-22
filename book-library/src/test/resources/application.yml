@@ -6,3 +6,16 @@ spring:
       spring:
         shell:
           script: false
+  sql:
+    init:
+      mode: always
+      data-locations: data-test.sql
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    org.hibernate.type: TRACE
