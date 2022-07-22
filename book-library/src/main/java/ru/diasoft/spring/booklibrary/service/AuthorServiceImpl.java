@@ -2,6 +2,7 @@ package ru.diasoft.spring.booklibrary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.booklibrary.domain.Author;
 import ru.diasoft.spring.booklibrary.repository.AuthorRepository;
 
@@ -14,6 +15,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public String getAuthorsInfo() {
         final StringBuilder sb = new StringBuilder("Авторы:\n");
         final List<Author> authors = authorRepository.findAll();
@@ -27,6 +29,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getAuthorInfo(Long authorId) {
         final Optional<Author> authorOpt = authorRepository.findById(authorId);
         if (authorOpt.isPresent()) {

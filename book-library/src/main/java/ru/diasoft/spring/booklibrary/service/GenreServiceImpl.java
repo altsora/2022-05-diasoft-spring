@@ -2,6 +2,7 @@ package ru.diasoft.spring.booklibrary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.booklibrary.domain.Genre;
 import ru.diasoft.spring.booklibrary.repository.GenreRepository;
 
@@ -14,6 +15,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public String getGenresInfo() {
         final StringBuilder sb = new StringBuilder("Жанры:\n");
         final List<Genre> genres = genreRepository.findAll();
@@ -27,6 +29,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getGenreInfo(Long genreId) {
         final Optional<Genre> genreOpt = genreRepository.findById(genreId);
         if (genreOpt.isPresent()) {
