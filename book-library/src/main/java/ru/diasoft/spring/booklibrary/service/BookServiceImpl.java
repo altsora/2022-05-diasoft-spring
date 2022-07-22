@@ -2,6 +2,7 @@ package ru.diasoft.spring.booklibrary.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.booklibrary.domain.Author;
 import ru.diasoft.spring.booklibrary.domain.Book;
 import ru.diasoft.spring.booklibrary.domain.Genre;
@@ -22,18 +23,21 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
 
     @Override
+    @Transactional(readOnly = true)
     public String getBooksInfo() {
         final List<Book> books = bookRepository.findAll();
         return getBookList(books);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getBooksInfoByGenre(String genreName) {
         final List<Book> books = bookRepository.findAllByGenreName(genreName);
         return getBookList(books);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getBooksInfoByAuthor(Long authorId) {
         final List<Book> books = bookRepository.findAllByAuthorId(authorId);
         return getBookList(books);
@@ -58,6 +62,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getBookInfo(Long bookId) {
         final Optional<Book> bookOpt = bookRepository.findById(bookId);
         if (bookOpt.isPresent()) {
@@ -75,16 +80,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getNumberOfBooks() {
         return bookRepository.count();
     }
 
     @Override
+    @Transactional
     public void deleteBook(Long bookId) {
         bookRepository.deleteById(bookId);
     }
 
     @Override
+    @Transactional
     public String addBook(String title, Long authorId, Long genreId) {
         final Optional<Author> authorOpt = authorRepository.findById(authorId);
         if (authorOpt.isEmpty())
@@ -99,11 +107,12 @@ public class BookServiceImpl implements BookService {
                 .author(authorOpt.get())
                 .genre(genreOpt.get())
                 .build();
-        final Long bookId = bookRepository.saveOrUpdate(book);
+        final Long bookId = bookRepository.save(book).getId();
         return "Книга успешно добавлено с ID " + bookId;
     }
 
     @Override
+    @Transactional
     public String updateBook(Long bookId, String title, Long authorId, Long genreId) {
         final Optional<Book> bookOpt = bookRepository.findById(bookId);
         if (bookOpt.isEmpty())
@@ -121,7 +130,7 @@ public class BookServiceImpl implements BookService {
                 .setTitle(title)
                 .setAuthor(authorOpt.get())
                 .setGenre(genreOpt.get());
-        bookRepository.saveOrUpdate(book);
+        bookRepository.save(book);
         return "Книга с ID " + bookId + " успешно обновлена";
     }
 }

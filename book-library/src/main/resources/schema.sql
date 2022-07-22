@@ -30,5 +30,5 @@ CREATE TABLE book_comment
     id      INT AUTO_INCREMENT PRIMARY KEY,
     book_id INT          NOT NULL,
     text    VARCHAR(500) NOT NULL,
-    foreign key (book_id) references book (id) ON DELETE CASCADE
+    foreign key (book_id) references book (id) --ON DELETE CASCADE
 )
