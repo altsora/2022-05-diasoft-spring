@@ -34,17 +34,17 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
     @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 30)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<BookComment> comments;

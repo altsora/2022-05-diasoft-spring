@@ -1,12 +1,12 @@
 package ru.diasoft.spring.booklibrary.repository;
 
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.diasoft.spring.booklibrary.domain.Author;
 import ru.diasoft.spring.booklibrary.domain.Book;
 import ru.diasoft.spring.booklibrary.domain.BookComment;
@@ -19,10 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisplayName("Тесты репозитория BookRepositoryImpl")
+@DisplayName("Тесты репозитория BookRepository")
 @DataJpaTest
-@Import(BookRepositoryImpl.class)
-class BookRepositoryImplTest {
+class BookRepositoryTest {
     private static final Long FIRST_BOOK_ID = 1L;
     private static final Long AUTHOR_ID = 1L;
     private static final Long GENRE_ID = 1L;
@@ -31,10 +30,19 @@ class BookRepositoryImplTest {
     private static final String SECOND_GENRE_NAME = "genre_2";
 
     @Autowired
-    private BookRepositoryImpl bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
     private TestEntityManager em;
+
+    @AfterEach
+    void tearDown() {
+        em.getEntityManager()
+                .getEntityManagerFactory()
+                .unwrap(SessionFactory.class)
+                .getStatistics()
+                .clear();
+    }
 
     @Test
     @DisplayName("Найти книгу по ID (найдена и не найдена)")
@@ -55,6 +63,10 @@ class BookRepositoryImplTest {
     @Test
     @DisplayName("Получить все книги + проверка количества запросов")
     void findAllTest() {
+        //Способы решения N+1:
+        // 1. Граф (указывается при запросе и над сущностью)
+        // 2. join fetch прямо в запросе
+        // 3. @Fetch(SUBSELECT) + @BatchSize(N) над полем сущности - для N родителей будет запрос дочки
         final SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
@@ -92,7 +104,7 @@ class BookRepositoryImplTest {
                 .genre(genre)
                 .build();
         final long countBeforeSave = bookRepository.count();
-        final Long bookId = bookRepository.saveOrUpdate(bookBeforeSave);
+        final Long bookId = bookRepository.save(bookBeforeSave).getId();
         final long countAfterSave = bookRepository.count();
         assertNotNull(bookId);
         assertEquals(countAfterSave, countBeforeSave + 1);
@@ -113,7 +125,7 @@ class BookRepositoryImplTest {
         book.setTitle(newTitle);
 
         final long countBeforeSave = bookRepository.count();
-        final Long bookId = bookRepository.saveOrUpdate(book);
+        final Long bookId = bookRepository.save(book).getId();
         final long countAfterSave = bookRepository.count();
         final Book actualBook = em.find(Book.class, FIRST_BOOK_ID);
 

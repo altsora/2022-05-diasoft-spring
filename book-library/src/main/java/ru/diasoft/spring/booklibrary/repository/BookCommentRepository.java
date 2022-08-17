@@ -1,18 +1,16 @@
 package ru.diasoft.spring.booklibrary.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.diasoft.spring.booklibrary.domain.BookComment;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface BookCommentRepository {
-    Optional<BookComment> findById(Long id);
+@Repository
+public interface BookCommentRepository extends JpaRepository<BookComment, Long> {
 
+    @EntityGraph(value = "graph.bookcomment-book")
+    @Override
     List<BookComment> findAll();
-
-    BookComment save(BookComment bookComment);
-
-    void deleteById(Long id);
-
-    void deleteOne(BookComment bookComment);
 }
