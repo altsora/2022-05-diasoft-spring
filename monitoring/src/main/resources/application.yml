@@ -1,0 +1,21 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+spring:
+  data:
+    rest:
+      base-path: /datarest
+
+logging:
+  file:
+    name: logfile.log
