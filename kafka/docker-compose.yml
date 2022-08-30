@@ -1,0 +1,51 @@
+version: '3'
+services:
+  producer:
+    build: ./producer
+    container_name: producer-container
+    ports:
+      - 7081:7081
+    expose:
+      - 7081
+    environment:
+      SERVER_PORT: 7081
+      SPRING_KAFKA_ENABLED: 'true'
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka_container:29092'
+    depends_on:
+     - kafka
+  consumer:
+    build: ./consumer
+    container_name: consumer-container
+    ports:
+      - 7082:7082
+    expose:
+      - 7082
+    environment:
+      SERVER_PORT: 7082
+      SPRING_KAFKA_ENABLED: 'true'
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'kafka_container:29092'
+    depends_on:
+     - kafka
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zoo_container
+    ports:
+      - 2181:2181
+    expose:
+      - 2181
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka_container
+    ports:
+      - 9092:9092
+    expose:
+      - 9092
+    environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_ZOOKEEPER_CONNECT: zoo_container:2181
+      KAFKA_LISTENERS: MY_LISTENER://kafka_container:29092
+      KAFKA_ADVERTISED_LISTENERS: MY_LISTENER://kafka_container:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: MY_LISTENER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: MY_LISTENER
+    depends_on:
+      - zookeeper

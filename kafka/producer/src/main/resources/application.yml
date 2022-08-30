@@ -1,0 +1,8 @@
+server:
+  port: 7081
+
+spring:
+  kafka:
+    enabled: false
+    topic: dias
+    bootstrap-servers: localhost:9092
