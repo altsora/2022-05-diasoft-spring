@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  jwt:
+    secret: test-secret
+    expiration:
+      seconds: 10
+      minutes: 0
+
+logging:
+  level:
+    org.hibernate.type: TRACE
