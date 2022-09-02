@@ -23,3 +23,7 @@ spring:
   data:
     rest:
       base-path: /datarest
+
+commons:
+  rest-exception-handler:
+    enabled: true

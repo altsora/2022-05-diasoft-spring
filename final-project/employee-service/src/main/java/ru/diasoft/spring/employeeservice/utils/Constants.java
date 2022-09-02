@@ -12,4 +12,5 @@ public class Constants {
     public static final int LAST_NAME_MAX_SIZE = 50;
     public static final int MIDDLE_NAME_MAX_SIZE = 50;
 
+    public static final String EMPLOYEE_USERNAME_EXISTS = "Сотрудник с логином '%s' уже существует";
 }

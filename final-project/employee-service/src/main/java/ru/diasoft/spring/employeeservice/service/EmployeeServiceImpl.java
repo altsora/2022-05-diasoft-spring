@@ -1,21 +1,85 @@
 package ru.diasoft.spring.employeeservice.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
+import ru.diasoft.spring.employeeservice.domain.Employee;
+import ru.diasoft.spring.employeeservice.mapper.EmployeeMapper;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
-import ru.diasoft.spring.employeeservice.model.AddEmployeeResponse;
+import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
+import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
+import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
+import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
+import ru.diasoft.spring.employeeservice.utils.Functions;
+
+import static ru.diasoft.spring.employeeservice.utils.Constants.EMPLOYEE_USERNAME_EXISTS;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper;
+    private static int uniqNumberEmployeeCount = 0; //TODO сделать генерацию номера
 
     @Override
-    public AddEmployeeResponse addEmployee(AddEmployeeRequest request) {
-        System.err.println(request);
+    public AddEmployeeResponse addEmployee(@NonNull AddEmployeeRequest request) {
+        System.err.println("Добавляем сотрудника " + request);
+        final String username = CommonUtils.trimString(request.getUsername());
+        if (employeeRepository.existsByUsername(username)) {
+            final AddEmployeeResponse response = new AddEmployeeResponse();
+            response.setRetMessage(String.format(EMPLOYEE_USERNAME_EXISTS, username));
+            return response;
+        }
+
+        final Employee domain = employeeMapper.fromAddEmployeeRequestToDomain(request);
+        domain.setActive(true);
+        domain.setUniqNumber(++uniqNumberEmployeeCount);
+        final Employee saved = employeeRepository.saveAndFlush(domain);
+
+        final AddEmployeeResponse response = employeeMapper.fromDomainToAddEmployeeResponse(saved);
+        response.setRetStatus(true);
+        response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(saved)));
+        return response;
+    }
+
+    /**
+     * Поиск сотрудника по ID и возвращение информации по нему.
+     *
+     * @param employeeId ID сотрудника
+     * @throws DomainNotFoundException если сотрудник не найден
+     */
+    @Override
+    public GetEmployeeByIdResponse getEmployeeById(@NonNull Integer employeeId) {
+        final Employee domain = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new DomainNotFoundException(Employee.class, employeeId));
+        final GetEmployeeByIdResponse response = employeeMapper.fromDomainToGetEmployeeByIdResponse(domain);
+        response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
+        return response;
+    }
+
+    @Override
+    public UpdateEmployeeResponse updateEmployee(@NonNull Integer employeeId, @NonNull UpdateEmployeeRequest request) {
+        System.err.println("Обновление сотрудника " + request + " по ID " + employeeId);
         return null;
+    }
+
+    /**
+     * Метод устанавливает статус активности указанному сотруднику.
+     *
+     * @param employeeId ID сотрудника
+     * @param value      флаг активности
+     * @throws DomainNotFoundException если сотрудник не найден
+     */
+    @Override
+    public void setActivity(@NonNull Integer employeeId, boolean value) {
+        if (employeeRepository.existsById(employeeId)) {
+            throw new DomainNotFoundException(Employee.class, employeeId);
+        }
+        employeeRepository.setActivity(employeeId, value);
     }
 }
