@@ -13,5 +13,13 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
   liquibase:
     change-log: /rootChangeLog.xml
+  data:
+    rest:
+      base-path: /datarest

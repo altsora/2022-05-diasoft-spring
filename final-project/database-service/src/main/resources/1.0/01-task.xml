@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="01-task-001" author="avergun" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="task_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей task_id_seq</comment>
+
+        <createSequence sequenceName="task_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="01-task-002" author="avergun" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="task_id_seq"/>
+            <not>
+                <tableExists tableName="tasks"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица задач</comment>
+
+        <createTable tableName="tasks" remarks="Таблица задач">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="task_id_seq">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title"
+                    type="varchar(100)"
+                    remarks="Заголовок задачи">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="01-task-003" author="avergun" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="tasks"/>
+        </preConditions>
+
+        <comment>Загрузка задач</comment>
+
+        <sql>
+            INSERT INTO tasks(title) VALUES ('task_1');
+            INSERT INTO tasks(title) VALUES ('task_2');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
