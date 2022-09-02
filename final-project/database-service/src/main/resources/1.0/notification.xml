@@ -32,7 +32,7 @@
                     type="integer"
                     remarks="Суррогатный первичный ключ"
                     defaultValueSequenceNext="notification_id_seq">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_notifications_pk"/>
             </column>
             <column name="uniq_number"
                     type="integer"

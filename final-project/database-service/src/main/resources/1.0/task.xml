@@ -32,7 +32,7 @@
                     type="integer"
                     remarks="Суррогатный первичный ключ"
                     defaultValueSequenceNext="task_id_seq">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_tasks_pk"/>
             </column>
             <column name="title"
                     type="varchar(100)"

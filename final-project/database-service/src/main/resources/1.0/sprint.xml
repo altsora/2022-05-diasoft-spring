@@ -32,7 +32,7 @@
                     type="integer"
                     remarks="Суррогатный первичный ключ"
                     defaultValueSequenceNext="notification_id_seq">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_sprints_pk"/>
             </column>
             <column name="uniq_number"
                     type="integer"
@@ -58,6 +58,7 @@
                     type="integer"
                     remarks="ID команды">
                 <constraints nullable="false"
+                             foreignKeyName="fk_sprint_team"
                              referencedTableName="t_teams"
                              referencedColumnNames="id"/>
             </column>

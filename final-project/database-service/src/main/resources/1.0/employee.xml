@@ -32,7 +32,7 @@
                     type="integer"
                     remarks="Суррогатный первичный ключ"
                     defaultValueSequenceNext="employee_id_seq">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_employees_pk"/>
             </column>
             <column name="username"
                     type="varchar(50)"
