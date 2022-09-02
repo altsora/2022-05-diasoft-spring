@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="sprint-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="sprint_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей sprint_id_seq</comment>
+
+        <createSequence sequenceName="sprint_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="sprint-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="sprint_id_seq"/>
+            <not>
+                <tableExists tableName="t_sprints"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица спринтов</comment>
+
+        <createTable tableName="t_sprints" remarks="Таблица спринтов">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="notification_id_seq">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер спринта">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name"
+                    type="varchar(50)"
+                    remarks="Название спринта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_start"
+                    type="timestamp"
+                    remarks="Дата и время начала спринта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_end"
+                    type="timestamp"
+                    remarks="Дата и время окончания спринта">
+                <constraints nullable="false"/>
+            </column>
+            <column name="team_id"
+                    type="integer"
+                    remarks="ID команды">
+                <constraints nullable="false"
+                             referencedTableName="t_teams"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

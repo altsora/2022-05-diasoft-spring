@@ -3,9 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="employee-001" author="avergun" context="update" runInTransaction="false"
+    <changeSet id="employee-001" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="MARK_RAN">
+        <preConditions onFail="HALT">
             <not>
                 <sequenceExists sequenceName="employee_id_seq"/>
             </not>
@@ -16,18 +16,18 @@
         <createSequence sequenceName="employee_id_seq" incrementBy="1" startValue="1"/>
     </changeSet>
 
-    <changeSet id="employee-002" author="avergun" context="update" runInTransaction="false"
+    <changeSet id="employee-002" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="MARK_RAN">
+        <preConditions onFail="HALT">
             <sequenceExists sequenceName="employee_id_seq"/>
             <not>
-                <tableExists tableName="employees"/>
+                <tableExists tableName="t_employees"/>
             </not>
         </preConditions>
 
         <comment>Создана таблица сотрудников</comment>
 
-        <createTable tableName="employees" remarks="Таблица сотрудников">
+        <createTable tableName="t_employees" remarks="Таблица сотрудников">
             <column name="id"
                     type="integer"
                     remarks="Суррогатный первичный ключ"
@@ -36,8 +36,8 @@
             </column>
             <column name="username"
                     type="varchar(50)"
-                    remarks="Логин сотрудника">
-                <constraints nullable="false"/>
+                    remarks="Электронный адрес сотрудника">
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="password"
                     type="varchar(20)"
@@ -47,7 +47,7 @@
             <column name="uniq_number"
                     type="integer"
                     remarks="Уникальный номер сотрудника">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="first_name"
                     type="varchar(50)"
@@ -70,6 +70,19 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="employee-003" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_employees" columnName="username"/>
+        </preConditions>
+
+        <comment>Создание индекса t_employees_k0</comment>
+
+        <createIndex tableName="t_employees" indexName="t_employees_k0" unique="true">
+            <column name="username"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

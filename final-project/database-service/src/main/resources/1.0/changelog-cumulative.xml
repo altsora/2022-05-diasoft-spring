@@ -5,6 +5,9 @@
 
     <include file="test.xml" relativeToChangelogFile="true"/>
     <include file="employee.xml" relativeToChangelogFile="true"/>
+    <include file="team.xml" relativeToChangelogFile="true"/>
+    <include file="notification.xml" relativeToChangelogFile="true"/>
+    <include file="sprint.xml" relativeToChangelogFile="true"/>
     <include file="task.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

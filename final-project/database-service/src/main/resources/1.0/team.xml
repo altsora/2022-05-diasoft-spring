@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="team-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="team_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей team_id_seq</comment>
+
+        <createSequence sequenceName="team_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="team-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="team_id_seq"/>
+            <not>
+                <tableExists tableName="t_teams"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица команд</comment>
+
+        <createTable tableName="t_teams" remarks="Таблица команд">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="team_id_seq">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер команды">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name"
+                    type="varchar(50)"
+                    remarks="Название команды">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="is_active"
+                    type="boolean"
+                    remarks="Флаг: команда активна">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

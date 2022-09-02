@@ -3,9 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="task-001" author="avergun" context="update" runInTransaction="false"
+    <changeSet id="task-001" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="MARK_RAN">
+        <preConditions onFail="HALT">
             <not>
                 <sequenceExists sequenceName="task_id_seq"/>
             </not>
@@ -16,18 +16,18 @@
         <createSequence sequenceName="task_id_seq" incrementBy="1" startValue="1"/>
     </changeSet>
 
-    <changeSet id="task-002" author="avergun" context="update" runInTransaction="false"
+    <changeSet id="task-002" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="MARK_RAN">
+        <preConditions onFail="HALT">
             <sequenceExists sequenceName="task_id_seq"/>
             <not>
-                <tableExists tableName="tasks"/>
+                <tableExists tableName="t_tasks"/>
             </not>
         </preConditions>
 
         <comment>Создана таблица задач</comment>
 
-        <createTable tableName="tasks" remarks="Таблица задач">
+        <createTable tableName="t_tasks" remarks="Таблица задач">
             <column name="id"
                     type="integer"
                     remarks="Суррогатный первичный ключ"
@@ -42,18 +42,17 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="task-999" author="avergun" context="update" runInTransaction="false"
+    <changeSet id="task-999" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
         <preConditions onFail="HALT">
-            <tableExists tableName="tasks"/>
-            <columnExists tableName="tasks" columnName="title"/>
+            <columnExists tableName="t_tasks" columnName="title"/>
         </preConditions>
 
         <comment>Загрузка задач</comment>
 
         <sql>
-            INSERT INTO tasks(title) VALUES ('task_1');
-            INSERT INTO tasks(title) VALUES ('task_2');
+            INSERT INTO t_tasks(title) VALUES ('task_1');
+            INSERT INTO t_tasks(title) VALUES ('task_2');
         </sql>
     </changeSet>
 
