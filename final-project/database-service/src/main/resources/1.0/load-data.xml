@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="load-data-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_employees"/>
+            <columnExists tableName="t_employees" columnName="username"/>
+            <columnExists tableName="t_employees" columnName="password"/>
+            <columnExists tableName="t_employees" columnName="uniq_number"/>
+            <columnExists tableName="t_employees" columnName="first_name"/>
+            <columnExists tableName="t_employees" columnName="last_name"/>
+            <columnExists tableName="t_employees" columnName="middle_name"/>
+            <columnExists tableName="t_employees" columnName="is_active"/>
+        </preConditions>
+
+        <comment>Загрузка сотрудников</comment>
+
+        <sql>
+            INSERT INTO t_employees (username, password, uniq_number, first_name, last_name, middle_name, is_active)
+            VALUES  ('emp1', '12345', '-1', 'firstName1', 'lastName1', 'middleName1', false),
+                    ('emp2', '12345', '-2', 'firstName2', 'lastName2', 'middleName2', false),
+                    ('emp3', '12345', '-3', 'firstName3', 'lastName3', 'middleName3', false);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_teams"/>
+            <columnExists tableName="t_teams" columnName="name"/>
+            <columnExists tableName="t_teams" columnName="uniq_number"/>
+            <columnExists tableName="t_teams" columnName="is_active"/>
+        </preConditions>
+
+        <comment>Загрузка команд</comment>
+
+        <sql>
+            INSERT INTO t_teams (name, uniq_number, is_active)
+            VALUES  ('Test team 1', -1, true),
+                    ('Test team 2', -2, false);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-003" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_team_employee_link"/>
+            <columnExists tableName="t_team_employee_link" columnName="team_id"/>
+            <columnExists tableName="t_team_employee_link" columnName="employee_id"/>
+        </preConditions>
+
+        <comment>Загрузка сотрудников в команды</comment>
+
+        <sql>
+            INSERT INTO t_team_employee_link (team_id, employee_id)
+            VALUES  (1, 1),
+                    (1, 2);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

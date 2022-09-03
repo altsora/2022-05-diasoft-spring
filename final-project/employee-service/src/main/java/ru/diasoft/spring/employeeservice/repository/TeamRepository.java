@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.employeeservice.domain.Team;
@@ -11,6 +12,7 @@ import ru.diasoft.spring.employeeservice.domain.Team;
 import java.util.Optional;
 
 @Repository
+@RestResource(path = "teams")
 public interface TeamRepository extends JpaRepository<Team, Integer> {
     boolean existsByName(String name);
 

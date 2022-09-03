@@ -14,7 +14,10 @@ import ru.diasoft.spring.employeeservice.model.request.AddTeamRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddTeamResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetTeamByUniqNumberResponse;
 import ru.diasoft.spring.employeeservice.model.response.SetTeamActivityResponse;
+import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
 import ru.diasoft.spring.employeeservice.repository.TeamRepository;
+
+import javax.annotation.PostConstruct;
 
 import static ru.diasoft.spring.employeeservice.utils.Constants.TEAM_NAME_EXISTS;
 
@@ -24,8 +27,10 @@ import static ru.diasoft.spring.employeeservice.utils.Constants.TEAM_NAME_EXISTS
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
+    private final EmployeeRepository employeeRepository;
     private final TeamMapper teamMapper;
     private static int uniqNumberTeamCount = 0; //TODO сделать генерацию номера
+
 
     /**
      * Добавление новой команды
@@ -97,7 +102,9 @@ public class TeamServiceImpl implements TeamService {
      *                           true - добавить сотрудника в команду, false - удалить сотрудника из команды
      */
     @Override
-    public void employeeInTeam(Integer teamUniqNumber, Integer employeeUniqNumber, boolean status) {
+    public void employeeInTeam(@NonNull Integer teamUniqNumber, @NonNull Integer employeeUniqNumber, boolean status) {
+        Team team = teamRepository.findByUniqNumber(teamUniqNumber)
+                .orElseThrow(() -> DomainNotFoundException.uniqNumber(Team.class, teamUniqNumber));
         //TODO
     }
 }

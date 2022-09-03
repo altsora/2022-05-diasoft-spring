@@ -17,7 +17,6 @@
     </changeSet>
 
 
-
     <changeSet id="team-employee-link-002" author="altsora" context="update" runInTransaction="false"
                objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
         <preConditions onFail="HALT">
@@ -29,12 +28,15 @@
 
         <comment>Создана таблица связей команды и сотрудника</comment>
 
-        <createTable tableName="t_team_employee_link" remarks="Таблица связи команды и сотрудника">
+        <createTable tableName="t_team_employee_link"
+                     remarks="Таблица связи команды и сотрудника">
             <column name="id"
                     type="integer"
                     remarks="Суррогатный первичный ключ"
                     defaultValueSequenceNext="team_employee_id_seq">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="t_team_employee_link_pk"/>
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="t_team_employee_link_pk"/>
             </column>
             <column name="team_id"
                     type="integer"
@@ -62,6 +64,46 @@
             <column name="team_id"/>
             <column name="employee_id"/>
         </createIndex>
+    </changeSet>
+
+    <changeSet id="team-employee-link-004" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_team_employee_link" columnName="team_id"/>
+            <columnExists tableName="t_teams" columnName="id"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_team_employee_link_team"/>
+            </not>
+        </preConditions>
+
+        <comment>Добавлен внешний ключ на таблицу команд</comment>
+
+        <addForeignKeyConstraint baseTableName="t_team_employee_link"
+                                 baseColumnNames="team_id"
+                                 constraintName="fk_team_employee_link_team"
+                                 onDelete="CASCADE"
+                                 referencedTableName="t_teams"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="team-employee-link-005" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_team_employee_link" columnName="employee_id"/>
+            <columnExists tableName="t_employees" columnName="id"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_team_employee_link_employee"/>
+            </not>
+        </preConditions>
+
+        <comment>Добавлен внешний ключ на таблицу сотрудников</comment>
+
+        <addForeignKeyConstraint baseTableName="t_team_employee_link"
+                                 baseColumnNames="employee_id"
+                                 constraintName="fk_team_employee_link_employee"
+                                 onDelete="CASCADE"
+                                 referencedTableName="t_employees"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
 </databaseChangeLog>

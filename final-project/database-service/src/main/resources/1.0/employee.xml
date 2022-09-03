@@ -72,17 +72,4 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="employee-003" author="altsora" context="update" runInTransaction="false"
-               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="HALT">
-            <columnExists tableName="t_employees" columnName="username"/>
-        </preConditions>
-
-        <comment>Создание индекса t_employees_k0</comment>
-
-        <createIndex tableName="t_employees" indexName="t_employees_k0" unique="true">
-            <column name="username"/>
-        </createIndex>
-    </changeSet>
-
 </databaseChangeLog>

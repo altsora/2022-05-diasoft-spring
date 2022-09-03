@@ -9,5 +9,8 @@
     <include file="notification.xml" relativeToChangelogFile="true"/>
     <include file="sprint.xml" relativeToChangelogFile="true"/>
     <include file="task.xml" relativeToChangelogFile="true"/>
+    <include file="team-employee-link.xml" relativeToChangelogFile="true"/>
+
+    <include file="load-data.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
