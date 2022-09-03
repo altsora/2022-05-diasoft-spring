@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
@@ -37,6 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param request входные данные
      */
     @Override
+    @Transactional
     public AddEmployeeResponse addEmployee(@NonNull AddEmployeeRequest request) {
         final String username = CommonUtils.trimString(request.getUsername());
         if (employeeRepository.existsByUsername(username)) {
@@ -80,6 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @throws DomainNotFoundException если сотрудник не найден
      */
     @Override
+    @Transactional
     public UpdateEmployeeResponse updateEmployee(@NonNull Integer employeeId, @NonNull UpdateEmployeeRequest request) {
         final Employee domain = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> DomainNotFoundException.id(Employee.class, employeeId));
@@ -102,6 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @throws DomainNotFoundException если сотрудник не найден
      */
     @Override
+    @Transactional
     public SetEmployeeActivityResponse setActivity(@NonNull Integer employeeId, boolean value) {
         if (!employeeRepository.existsById(employeeId)) {
             throw DomainNotFoundException.id(Employee.class, employeeId);

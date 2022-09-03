@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
@@ -32,6 +33,7 @@ public class TeamServiceImpl implements TeamService {
      * @param request входные данные
      */
     @Override
+    @Transactional
     public AddTeamResponse addTeam(@NonNull AddTeamRequest request) {
         final String name = CommonUtils.trimString(request.getName());
         if (teamRepository.existsByName(name)) {
@@ -73,13 +75,29 @@ public class TeamServiceImpl implements TeamService {
      * @param value      флаг активности
      */
     @Override
+    @Transactional
     public SetTeamActivityResponse setTeamActivity(@NonNull Integer uniqNumber, boolean value) {
         if (!teamRepository.existsByUniqNumber(uniqNumber)) {
             throw DomainNotFoundException.uniqNumber(Team.class, uniqNumber);
         }
         teamRepository.setActivity(uniqNumber, value);
 
+        final SetTeamActivityResponse response = new SetTeamActivityResponse();
+        response.success();
+        response.setActivity(value);
+        return response;
+    }
 
-        return null;
+    /**
+     * Метод добавляет сотрудника в команду или удаляет из неё.
+     *
+     * @param teamUniqNumber     уникальный номер команды
+     * @param employeeUniqNumber уникальный номер сотрудника
+     * @param status             флаг, определяющий действие:
+     *                           true - добавить сотрудника в команду, false - удалить сотрудника из команды
+     */
+    @Override
+    public void employeeInTeam(Integer teamUniqNumber, Integer employeeUniqNumber, boolean status) {
+        //TODO
     }
 }

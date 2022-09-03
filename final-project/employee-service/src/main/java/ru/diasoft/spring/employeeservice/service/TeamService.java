@@ -11,4 +11,6 @@ public interface TeamService {
     GetTeamByUniqNumberResponse getTeamByUniqNumber(Integer uniqNumber);
 
     SetTeamActivityResponse setTeamActivity(Integer uniqNumber, boolean value);
+
+    void employeeInTeam(Integer teamUniqNumber, Integer employeeUniqNumber, boolean status);
 }
