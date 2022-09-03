@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
+import ru.diasoft.spring.employeeservice.model.request.LoginRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
@@ -42,5 +43,10 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public SetEmployeeActivityResponse setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
         return employeeService.setActivity(employeeId, value);
+    }
+
+    @PostMapping("/login")
+    public Integer login(@RequestBody LoginRequest request) {
+        return employeeService.login(request);
     }
 }

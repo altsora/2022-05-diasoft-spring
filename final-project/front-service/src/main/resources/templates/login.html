@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+</head>
+<body>
+<p th:unless="${userId}">Ошибка авторизации</p>
+<form method="post" th:action="@{/auth/login}" th:object="${request}">
+    <input placeholder="Введите имя" required type="text" th:field="*{username}">
+    <input placeholder="Введите пароль" required type="text" th:field="*{password}">
+    <input type="submit" value="Войти">
+</form>
+</body>
+</html>

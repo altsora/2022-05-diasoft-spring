@@ -11,6 +11,7 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
 import ru.diasoft.spring.employeeservice.domain.Employee;
 import ru.diasoft.spring.employeeservice.mapper.EmployeeMapper;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
+import ru.diasoft.spring.employeeservice.model.request.LoginRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
@@ -116,5 +117,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         response.success();
         response.setActivity(value);
         return response;
+    }
+
+    /**
+     * Возвращает ID пользователя по логину и паролю, иначе null.
+     *
+     * @param request входные данные
+     */
+    @Override
+    public Integer login(@NonNull LoginRequest request) {
+        return employeeRepository.findIdByUsernameAndPassword(request.getUsername(), request.getPassword())
+                .orElse(null);
     }
 }

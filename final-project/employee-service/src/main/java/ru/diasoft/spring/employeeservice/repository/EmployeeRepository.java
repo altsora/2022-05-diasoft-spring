@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.employeeservice.domain.Employee;
 
+import java.util.Optional;
+
 @Repository
 @RestResource(path = "employees")
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
@@ -19,4 +21,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     void setActivity(@Param("id") Integer employeeId, @Param("value") boolean value);
 
     boolean existsByUsername(String username);
+
+    @Query("SELECT e.id FROM Employee e WHERE e.username = :username AND e.password = :password")
+    Optional<Integer> findIdByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }

@@ -20,6 +20,7 @@
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <employee-service.version>0.0.1-SNAPSHOT</employee-service.version>
+        <commons-spring-boot-starter.version>1.0-SNAPSHOT</commons-spring-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -61,11 +62,11 @@
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>ru.diasoft.spring</groupId>-->
-<!--            <artifactId>employee-service</artifactId>-->
-<!--            <version>${employee-service.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>ru.diasoft.spring</groupId>
+            <artifactId>commons-spring-boot-starter</artifactId>
+            <version>${commons-spring-boot-starter.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
