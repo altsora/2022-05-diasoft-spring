@@ -56,6 +56,6 @@ public class LoggableAspect {
     )
     public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
         log.error("An exception has been thrown in {}().\nCause: {}",
-                joinPoint.getSignature().getName(), exception.getCause());
+                joinPoint.getSignature().getName(), exception.getMessage());
     }
 }

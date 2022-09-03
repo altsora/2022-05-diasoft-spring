@@ -1,9 +1,5 @@
 package ru.diasoft.spring.commonsspringbootauthoconfigure.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -40,11 +37,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
-        final ErrorResponse response = ErrorResponse.builder()
-                .exception(METHOD_ARGUMENT_NOT_VALID_EXCEPTION)
-                .message(METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE)
-                .errors(errors)
-                .build();
+        final BaseResponse response = new BaseResponse()
+                .setException(METHOD_ARGUMENT_NOT_VALID_EXCEPTION)
+                .setRetMessage(METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE)
+                .setErrors(errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -53,30 +49,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        final ErrorResponse response = ErrorResponse.builder()
-                .exception(HTTP_MESSAGE_NOT_READABLE_EXCEPTION)
-                .message(ex.getMessage())
-                .build();
+        final BaseResponse response = new BaseResponse()
+                .setException(HTTP_MESSAGE_NOT_READABLE_EXCEPTION)
+                .setRetMessage(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DomainNotFoundException.class)
     public ResponseEntity<Object> handleEntity(DomainNotFoundException ex) {
-        final ErrorResponse response = ErrorResponse.builder()
-                .exception(DOMAIN_NOT_FOUND_EXCEPTION)
-                .message(ex.getMessage())
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    private static class ErrorResponse {
-        private final String exception;
-        private final String message;
-
-        @JsonInclude(JsonInclude.Include.NON_EMPTY)
-        private List<String> errors;
+        final BaseResponse response = new BaseResponse()
+                .setException(DOMAIN_NOT_FOUND_EXCEPTION)
+                .setRetMessage(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

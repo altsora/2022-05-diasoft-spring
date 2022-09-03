@@ -3,18 +3,16 @@ package ru.diasoft.spring.employeeservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
-import ru.diasoft.spring.employeeservice.model.response.SetActivityResponse;
+import ru.diasoft.spring.employeeservice.model.response.SetEmployeeActivityResponse;
 import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.service.EmployeeService;
 
 import javax.validation.Valid;
 
-@Loggable
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/employees")
@@ -42,7 +40,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}/activity")
     @ResponseStatus(HttpStatus.OK)
-    public SetActivityResponse setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
+    public SetEmployeeActivityResponse setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
         return employeeService.setActivity(employeeId, value);
     }
 }

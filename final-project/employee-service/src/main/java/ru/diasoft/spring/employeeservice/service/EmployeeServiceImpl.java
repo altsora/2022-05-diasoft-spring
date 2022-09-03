@@ -13,7 +13,7 @@ import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
-import ru.diasoft.spring.employeeservice.model.response.SetActivityResponse;
+import ru.diasoft.spring.employeeservice.model.response.SetEmployeeActivityResponse;
 import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
 import ru.diasoft.spring.employeeservice.utils.Functions;
@@ -34,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * <p>
      * Если сотрудник с указанным логином существует, то новый не будет добавлен.
      *
-     * @param request входящие данные для создания сотрудника
+     * @param request входные данные
      */
     @Override
     public AddEmployeeResponse addEmployee(@NonNull AddEmployeeRequest request) {
@@ -65,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public GetEmployeeByIdResponse getEmployeeById(@NonNull Integer employeeId) {
         final Employee domain = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new DomainNotFoundException(Employee.class, employeeId));
+                .orElseThrow(() -> DomainNotFoundException.id(Employee.class, employeeId));
         final GetEmployeeByIdResponse response = employeeMapper.fromDomainToGetEmployeeByIdResponse(domain);
         response.success();
         response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
@@ -76,13 +76,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Обновление данных сотрудника.
      *
      * @param employeeId ID сотрудника
-     * @param request    входящие данные, которые требуется применить
+     * @param request    входные данные
      * @throws DomainNotFoundException если сотрудник не найден
      */
     @Override
     public UpdateEmployeeResponse updateEmployee(@NonNull Integer employeeId, @NonNull UpdateEmployeeRequest request) {
         final Employee domain = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new DomainNotFoundException(Employee.class, employeeId));
+                .orElseThrow(() -> DomainNotFoundException.id(Employee.class, employeeId));
         domain.setFirstName(CommonUtils.trimString(request.getFirstName()));
         domain.setLastName(CommonUtils.trimString(request.getLastName()));
         domain.setMiddleName(CommonUtils.trimString(request.getMiddleName()));
@@ -102,13 +102,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @throws DomainNotFoundException если сотрудник не найден
      */
     @Override
-    public SetActivityResponse setActivity(@NonNull Integer employeeId, boolean value) {
-        if (employeeRepository.existsById(employeeId)) {
-            throw new DomainNotFoundException(Employee.class, employeeId);
+    public SetEmployeeActivityResponse setActivity(@NonNull Integer employeeId, boolean value) {
+        if (!employeeRepository.existsById(employeeId)) {
+            throw DomainNotFoundException.id(Employee.class, employeeId);
         }
         employeeRepository.setActivity(employeeId, value);
 
-        final SetActivityResponse response = new SetActivityResponse();
+        final SetEmployeeActivityResponse response = new SetEmployeeActivityResponse();
         response.success();
         response.setActivity(value);
         return response;

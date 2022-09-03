@@ -11,7 +11,11 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetActivityResponse extends BaseResponse {
-    @JsonProperty("activity")
-    private boolean activity;
+public class GetTeamByUniqNumberResponse extends BaseResponse {
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("uniqNumber")
+    private Integer uniqNumber;
+    @JsonProperty("name")
+    private String name;
 }
