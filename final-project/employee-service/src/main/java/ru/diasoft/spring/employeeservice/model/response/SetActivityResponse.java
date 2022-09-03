@@ -11,13 +11,7 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateEmployeeResponse extends BaseResponse {
-    @JsonProperty("firstName")
-    private String firstName;
-    @JsonProperty("lastName")
-    private String lastName;
-    @JsonProperty("middleName")
-    private String middleName;
-    @JsonProperty("fullName")
-    private String fullName;
+public class SetActivityResponse extends BaseResponse {
+    @JsonProperty("activity")
+    private boolean activity;
 }

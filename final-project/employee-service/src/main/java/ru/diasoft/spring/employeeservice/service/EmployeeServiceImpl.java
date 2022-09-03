@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
 import ru.diasoft.spring.employeeservice.domain.Employee;
@@ -12,6 +13,7 @@ import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
+import ru.diasoft.spring.employeeservice.model.response.SetActivityResponse;
 import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
 import ru.diasoft.spring.employeeservice.utils.Functions;
@@ -19,6 +21,7 @@ import ru.diasoft.spring.employeeservice.utils.Functions;
 import static ru.diasoft.spring.employeeservice.utils.Constants.EMPLOYEE_USERNAME_EXISTS;
 
 @Log4j2
+@Loggable
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -26,9 +29,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private static int uniqNumberEmployeeCount = 0; //TODO сделать генерацию номера
 
+    /**
+     * Добавление сотрудника.
+     * <p>
+     * Если сотрудник с указанным логином существует, то новый не будет добавлен.
+     *
+     * @param request входящие данные для создания сотрудника
+     */
     @Override
     public AddEmployeeResponse addEmployee(@NonNull AddEmployeeRequest request) {
-        System.err.println("Добавляем сотрудника " + request);
         final String username = CommonUtils.trimString(request.getUsername());
         if (employeeRepository.existsByUsername(username)) {
             final AddEmployeeResponse response = new AddEmployeeResponse();
@@ -42,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         final Employee saved = employeeRepository.saveAndFlush(domain);
 
         final AddEmployeeResponse response = employeeMapper.fromDomainToAddEmployeeResponse(saved);
-        response.setRetStatus(true);
+        response.success();
         response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(saved)));
         return response;
     }
@@ -58,14 +67,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         final Employee domain = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new DomainNotFoundException(Employee.class, employeeId));
         final GetEmployeeByIdResponse response = employeeMapper.fromDomainToGetEmployeeByIdResponse(domain);
+        response.success();
         response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
         return response;
     }
 
+    /**
+     * Обновление данных сотрудника.
+     *
+     * @param employeeId ID сотрудника
+     * @param request    входящие данные, которые требуется применить
+     * @throws DomainNotFoundException если сотрудник не найден
+     */
     @Override
     public UpdateEmployeeResponse updateEmployee(@NonNull Integer employeeId, @NonNull UpdateEmployeeRequest request) {
-        System.err.println("Обновление сотрудника " + request + " по ID " + employeeId);
-        return null;
+        final Employee domain = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new DomainNotFoundException(Employee.class, employeeId));
+        domain.setFirstName(CommonUtils.trimString(request.getFirstName()));
+        domain.setLastName(CommonUtils.trimString(request.getLastName()));
+        domain.setMiddleName(CommonUtils.trimString(request.getMiddleName()));
+        final Employee saved = employeeRepository.saveAndFlush(domain);
+
+        final UpdateEmployeeResponse response = employeeMapper.fromDomainToUpdateEmployeeResponse(saved);
+        response.success();
+        response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
+        return response;
     }
 
     /**
@@ -76,10 +102,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @throws DomainNotFoundException если сотрудник не найден
      */
     @Override
-    public void setActivity(@NonNull Integer employeeId, boolean value) {
+    public SetActivityResponse setActivity(@NonNull Integer employeeId, boolean value) {
         if (employeeRepository.existsById(employeeId)) {
             throw new DomainNotFoundException(Employee.class, employeeId);
         }
         employeeRepository.setActivity(employeeId, value);
+
+        final SetActivityResponse response = new SetActivityResponse();
+        response.success();
+        response.setActivity(value);
+        return response;
     }
 }

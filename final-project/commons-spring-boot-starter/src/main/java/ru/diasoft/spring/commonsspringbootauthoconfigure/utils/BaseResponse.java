@@ -13,4 +13,8 @@ public class BaseResponse {
     private Boolean retStatus = false;
     @JsonProperty("retMessage")
     private String retMessage;
+
+    public void success() {
+        this.retStatus = true;
+    }
 }

@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetEmployeeByIdResponse {
+public class GetEmployeeByIdResponse extends BaseResponse {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("username")

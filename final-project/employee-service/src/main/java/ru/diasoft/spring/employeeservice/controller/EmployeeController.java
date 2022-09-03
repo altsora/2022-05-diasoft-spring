@@ -8,6 +8,7 @@ import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
+import ru.diasoft.spring.employeeservice.model.response.SetActivityResponse;
 import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.service.EmployeeService;
 
@@ -41,7 +42,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}/activity")
     @ResponseStatus(HttpStatus.OK)
-    public void setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
-        employeeService.setActivity(employeeId, value);
+    public SetActivityResponse setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
+        return employeeService.setActivity(employeeId, value);
     }
 }
