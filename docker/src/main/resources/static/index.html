@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+<h1>Главная страница</h1>
+<p>Список всех доступных книг: <a href="/api/books" target="_blank">ссылка</a></p>
+<br>
+Добавить книгу с названием:
+<form action="/api/books" method="post">
+    <input type="text" name="title">
+    <input type="submit" value="Добавить">
+</form>
+</body>
+</html>
