@@ -42,18 +42,4 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="task-999" author="altsora" context="update" runInTransaction="false"
-               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <preConditions onFail="HALT">
-            <columnExists tableName="t_tasks" columnName="title"/>
-        </preConditions>
-
-        <comment>Загрузка задач</comment>
-
-        <sql>
-            INSERT INTO t_tasks(title) VALUES ('task_1');
-            INSERT INTO t_tasks(title) VALUES ('task_2');
-        </sql>
-    </changeSet>
-
 </databaseChangeLog>

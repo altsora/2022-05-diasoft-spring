@@ -18,10 +18,10 @@
         <comment>Загрузка сотрудников</comment>
 
         <sql>
-            INSERT INTO t_employees (username, password, uniq_number, first_name, last_name, middle_name, is_active)
-            VALUES  ('emp1', '12345', '-1', 'firstName1', 'lastName1', 'middleName1', false),
-                    ('emp2', '12345', '-2', 'firstName2', 'lastName2', 'middleName2', false),
-                    ('emp3', '12345', '-3', 'firstName3', 'lastName3', 'middleName3', false);
+            INSERT INTO t_employees (username, password, uniq_number, first_name, last_name, middle_name, is_active) VALUES
+            ('emp1', '12345', '-1', 'firstName1', 'lastName1', 'middleName1', false),
+            ('emp2', '12345', '-2', 'firstName2', 'lastName2', 'middleName2', false),
+            ('emp3', '12345', '-3', 'firstName3', 'lastName3', 'middleName3', false);
         </sql>
     </changeSet>
 
@@ -37,9 +37,9 @@
         <comment>Загрузка команд</comment>
 
         <sql>
-            INSERT INTO t_teams (name, uniq_number, is_active)
-            VALUES  ('Test team 1', -1, true),
-                    ('Test team 2', -2, false);
+            INSERT INTO t_teams (name, uniq_number, is_active) VALUES
+            ('Test team 1', -1, true),
+            ('Test team 2', -2, false);
         </sql>
     </changeSet>
 
@@ -54,9 +54,25 @@
         <comment>Загрузка сотрудников в команды</comment>
 
         <sql>
-            INSERT INTO t_team_employee_link (team_id, employee_id)
-            VALUES  (1, 1),
-                    (1, 2);
+            INSERT INTO t_team_employee_link (team_id, employee_id) VALUES
+            (1, 1),
+            (1, 2);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-004" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_tasks"/>
+            <columnExists tableName="t_tasks" columnName="title"/>
+        </preConditions>
+
+        <comment>Загрузка задач</comment>
+
+        <sql>
+            INSERT INTO t_tasks(title) VALUES
+            ('task_1'),
+            ('task_2');
         </sql>
     </changeSet>
 
