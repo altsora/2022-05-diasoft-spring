@@ -27,3 +27,7 @@ spring:
 commons:
   rest-exception-handler:
     enabled: true
+  loggable-aop:
+    enabled: true
+
+logging.level.ru.diasoft.spring.commonsspringbootauthoconfigure.aop: DEBUG

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,11 +21,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonConstants.*;
-import static ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonConstants.DOMAIN_NOT_FOUND_EXCEPTION;
 
 @Log4j2
 @ControllerAdvice
-@ConditionalOnProperty("commons.rest-exception-handler.enabled")
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @PostConstruct
     private void init() {
