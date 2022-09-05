@@ -19,9 +19,9 @@
 
         <sql>
             INSERT INTO t_employees (username, password, uniq_number, first_name, last_name, middle_name, is_active) VALUES
-            ('emp1', '12345', '-1', 'firstName1', 'lastName1', 'middleName1', false),
-            ('emp2', '12345', '-2', 'firstName2', 'lastName2', 'middleName2', false),
-            ('emp3', '12345', '-3', 'firstName3', 'lastName3', 'middleName3', false);
+            ('emp1', '12345', '-1', 'Иван', 'Иванов', 'Иванович', false),
+            ('emp2', '12345', '-2', 'Пётр', 'Петров', 'Петров', false),
+            ('emp3', '12345', '-3', 'Александр', 'Александров', 'Александрович', false);
         </sql>
     </changeSet>
 
@@ -38,8 +38,8 @@
 
         <sql>
             INSERT INTO t_teams (name, uniq_number, is_active) VALUES
-            ('Test team 1', -1, true),
-            ('Test team 2', -2, false);
+            ('Команда №1', -1, true),
+            ('Команда №2', -2, false);
         </sql>
     </changeSet>
 

@@ -56,7 +56,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DomainNotFoundException.class)
-    public ResponseEntity<Object> handleEntity(DomainNotFoundException ex) {
+    public ResponseEntity<Object> handleDomainNotFound(DomainNotFoundException ex) {
         final BaseResponse response = new BaseResponse()
                 .setException(DOMAIN_NOT_FOUND_EXCEPTION)
                 .setRetMessage(ex.getMessage());

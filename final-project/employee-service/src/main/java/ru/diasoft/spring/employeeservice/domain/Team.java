@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,11 +42,17 @@ public class Team {
     @Column(name = "is_active")
     private boolean active;
 
-//    @Fetch(FetchMode.SUBSELECT)
-//    @BatchSize(size = 15)
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "t_team_employee_link",
-//            joinColumns = @JoinColumn(name = "team_id"),
-//            inverseJoinColumns = @JoinColumn(name = "employee_id"))
-//    private List<Employee> employees;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "t_team_employee_link",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private List<Employee> employees = new ArrayList<>();
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+
+    public void removeEmployee(Employee employee) {
+        employees.removeIf(next -> next.getId().equals(employee.getId()));
+    }
 }

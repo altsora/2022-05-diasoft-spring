@@ -14,4 +14,6 @@ public class Constants {
 
     public static final String EMPLOYEE_USERNAME_EXISTS = "Сотрудник с логином '%s' уже существует";
     public static final String TEAM_NAME_EXISTS = "Команда с именем '%s' уже существует";
+    public static final String EMPLOYEE_IS_ALREADY_IN_TEAM = "Сотрудник '%s' уже в команде '%s'";
+    public static final String EMPLOYEE_IS_NOT_IN_TEAM = "Сотрудник '%s' не в команде '%s'";
 }
