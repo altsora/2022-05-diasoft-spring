@@ -67,4 +67,13 @@ public class Employee implements Serializable {
      */
     @Column(name = "is_active")
     private boolean active;
+
+    /**
+     * Команда сотрудника
+     */
+    @ManyToOne
+    @JoinTable(name = "t_team_employee_link",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id"))
+    public Team team;
 }

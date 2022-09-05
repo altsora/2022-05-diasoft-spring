@@ -10,6 +10,7 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoun
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
 import ru.diasoft.spring.employeeservice.domain.Employee;
 import ru.diasoft.spring.employeeservice.mapper.EmployeeMapper;
+import ru.diasoft.spring.employeeservice.mapper.TeamMapper;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.LoginRequest;
 import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
@@ -29,6 +30,7 @@ import static ru.diasoft.spring.employeeservice.utils.Constants.EMPLOYEE_USERNAM
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final TeamMapper teamMapper;
     private static int uniqNumberEmployeeCount = 0; //TODO сделать генерацию номера
 
     /**

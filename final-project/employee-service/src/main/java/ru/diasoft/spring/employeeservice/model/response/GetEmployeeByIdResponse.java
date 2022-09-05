@@ -28,4 +28,6 @@ public class GetEmployeeByIdResponse extends BaseResponse {
     private String fullName;
     @JsonProperty("active")
     private boolean active;
+    @JsonProperty("team")
+    private TeamInfoForGetEmployeeByIdResponse team;
 }

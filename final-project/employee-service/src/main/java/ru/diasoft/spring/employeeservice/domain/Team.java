@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Team {
+public class Team implements Serializable {
     /**
      * Суррогатный первичный ключ
      */
@@ -42,6 +43,9 @@ public class Team {
     @Column(name = "is_active")
     private boolean active;
 
+    /**
+     * Сотрудники команды
+     */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "t_team_employee_link",
             joinColumns = @JoinColumn(name = "team_id"),
