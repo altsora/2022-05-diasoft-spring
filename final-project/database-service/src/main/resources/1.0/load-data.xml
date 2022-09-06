@@ -70,9 +70,10 @@
         <comment>Загрузка задач</comment>
 
         <sql>
-            INSERT INTO t_tasks(title) VALUES
-            ('task_1'),
-            ('task_2');
+            INSERT INTO t_tasks(title, state) VALUES
+            ('Задача №1', 'Зарегистрировано'),
+            ('Задача №2', 'В работе'),
+            ('Задача №3', 'Завершено');
         </sql>
     </changeSet>
 

@@ -26,10 +26,10 @@
             </not>
         </preConditions>
 
-        <comment>Создана таблица связей команды и сотрудника</comment>
+        <comment>Создана таблица связей команд и сотрудников</comment>
 
         <createTable tableName="t_team_employee_link"
-                     remarks="Таблица связи команды и сотрудника">
+                     remarks="Таблица связей команд и сотрудников">
             <column name="id"
                     type="integer"
                     remarks="Суррогатный первичный ключ"
@@ -58,7 +58,7 @@
             <columnExists tableName="t_team_employee_link" columnName="employee_id"/>
         </preConditions>
 
-        <comment>Создан уникальный индекс t_team_employee_link_k0</comment>
+        <comment>Создан индекс t_team_employee_link_k0</comment>
 
         <createIndex tableName="t_team_employee_link" indexName="t_team_employee_link_k0" unique="true">
             <column name="team_id"/>
@@ -76,7 +76,7 @@
             </not>
         </preConditions>
 
-        <comment>Добавлен внешний ключ на таблицу команд</comment>
+        <comment>Добавлен внешний ключ fk_team_employee_link_team</comment>
 
         <addForeignKeyConstraint baseTableName="t_team_employee_link"
                                  baseColumnNames="team_id"
@@ -96,7 +96,7 @@
             </not>
         </preConditions>
 
-        <comment>Добавлен внешний ключ на таблицу сотрудников</comment>
+        <comment>Добавлен внешний ключ fk_team_employee_link_employee</comment>
 
         <addForeignKeyConstraint baseTableName="t_team_employee_link"
                                  baseColumnNames="employee_id"

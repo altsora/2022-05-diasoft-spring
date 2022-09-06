@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 
 @Data
 @Builder

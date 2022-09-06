@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.diasoft.spring.frontservice.model.LoginRequest;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequest;
 import ru.diasoft.spring.frontservice.service.AuthService;
 
 import java.util.Optional;

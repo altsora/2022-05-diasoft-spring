@@ -39,6 +39,11 @@
                     remarks="Заголовок задачи">
                 <constraints nullable="false"/>
             </column>
+            <column name="state"
+                    type="varchar(30)"
+                    remarks="Состояние задачи">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

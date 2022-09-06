@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
-import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
 import ru.diasoft.spring.employeeservice.domain.Employee;
 import ru.diasoft.spring.employeeservice.domain.Team;

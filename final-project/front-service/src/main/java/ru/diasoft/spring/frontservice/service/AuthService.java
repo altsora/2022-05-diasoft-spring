@@ -1,6 +1,6 @@
 package ru.diasoft.spring.frontservice.service;
 
-import ru.diasoft.spring.frontservice.model.LoginRequest;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequest;
 
 import java.util.Optional;
 

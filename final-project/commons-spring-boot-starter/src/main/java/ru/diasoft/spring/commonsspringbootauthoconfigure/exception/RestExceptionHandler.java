@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

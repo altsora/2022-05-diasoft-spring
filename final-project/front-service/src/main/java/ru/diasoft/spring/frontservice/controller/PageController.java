@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.diasoft.spring.frontservice.model.LoginRequest;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequest;
 
 @Controller
 @RequiredArgsConstructor

@@ -4,21 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.diasoft.spring.taskservice.enums.TaskState;
-import ru.diasoft.spring.taskservice.utils.converters.TaskStateConverter;
 
 import javax.persistence.*;
 
 /**
- * Доменная сущность "Задача"
+ * Доменная сущность "Связь задачи и сотрудника"
  */
 @Entity
-@Table(name = "t_tasks")
+@Table(name = "t_task_employee_link")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class TaskEmployeeLink {
     /**
      * Суррогатный первичный ключ
      */
@@ -28,15 +26,14 @@ public class Task {
     private Integer id;
 
     /**
-     * Название задачи
+     * ID задачи
      */
-    @Column(name = "title")
-    private String title;
+    @Column(name = "task_id")
+    private Integer taskId;
 
     /**
-     * Состояние задачи
+     * ID сотрудника
      */
-    @Column(name = "state")
-    @Convert(converter = TaskStateConverter.class)
-    private TaskState state;
+    @Column(name = "employee_id")
+    private Integer employeeId;
 }

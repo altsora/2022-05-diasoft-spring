@@ -5,13 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import ru.diasoft.spring.frontservice.feign.EmployeeFeign;
-import ru.diasoft.spring.frontservice.model.LoginRequest;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.feign.EmployeeServiceFeign;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequest;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j2
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class AuthServiceImpl extends HttpServlet implements AuthService {
     private final ConcurrentHashMap<String, Integer> activeSessions = new ConcurrentHashMap<>();
-    private final EmployeeFeign employeeFeign;
+    private final EmployeeServiceFeign employeeFeign;
 
     private HttpSession getSession() {
         final ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

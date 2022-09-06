@@ -98,6 +98,20 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Mapstruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- Commons-starter -->
+        <dependency>
+            <groupId>ru.diasoft.spring</groupId>
+            <artifactId>commons-spring-boot-starter</artifactId>
+            <version>${commons-spring-boot-starter.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

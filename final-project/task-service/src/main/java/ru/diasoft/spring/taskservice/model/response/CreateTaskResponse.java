@@ -1,4 +1,4 @@
-package ru.diasoft.spring.employeeservice.model.response;
+package ru.diasoft.spring.taskservice.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,11 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResp
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetTeamActivityResponse extends BaseResponse {
-    @JsonProperty("activity")
-    private boolean activity;
+public class CreateTaskResponse extends BaseResponse {
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("state")
+    private String state;
 }

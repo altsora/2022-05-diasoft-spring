@@ -106,6 +106,7 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
+        <!-- Commons-starter -->
         <dependency>
             <groupId>ru.diasoft.spring</groupId>
             <artifactId>commons-spring-boot-starter</artifactId>

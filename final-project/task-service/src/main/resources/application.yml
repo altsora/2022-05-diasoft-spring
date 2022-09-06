@@ -30,4 +30,6 @@ commons:
   loggable-aop:
     enabled: true
 
-logging.level.ru.diasoft.spring.commonsspringbootauthoconfigure.aop: DEBUG
+logging.level:
+  ru.diasoft.spring.commonsspringbootauthoconfigure.aop: DEBUG
+  org.hibernate.type: TRACE

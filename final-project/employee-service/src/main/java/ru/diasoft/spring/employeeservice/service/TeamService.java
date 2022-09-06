@@ -1,6 +1,6 @@
 package ru.diasoft.spring.employeeservice.service;
 
-import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.BaseResponse;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 import ru.diasoft.spring.employeeservice.model.request.AddTeamRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddTeamResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetTeamByUniqNumberResponse;
