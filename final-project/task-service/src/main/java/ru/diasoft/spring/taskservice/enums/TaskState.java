@@ -23,4 +23,14 @@ public enum TaskState {
                 .filter(s -> s.state.equals(state))
                 .findFirst();
     }
+
+    public static Optional<TaskState> findBySysName(String sysName) {
+        if (sysName == null) {
+            return Optional.empty();
+        }
+        final String sysNameUpperCase = sysName.toUpperCase();
+        return Arrays.stream(values())
+                .filter(s -> s.name().equals(sysNameUpperCase))
+                .findFirst();
+    }
 }

@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoundException;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
@@ -13,10 +14,16 @@ import ru.diasoft.spring.taskservice.enums.TaskState;
 import ru.diasoft.spring.taskservice.mapper.TaskMapper;
 import ru.diasoft.spring.taskservice.model.request.CreateTaskRequest;
 import ru.diasoft.spring.taskservice.model.response.CreateTaskResponse;
+import ru.diasoft.spring.taskservice.model.response.GetTasksByEmployeeResponse;
+import ru.diasoft.spring.taskservice.model.response.TaskForGetTasksByEmployeeResponse;
+import ru.diasoft.spring.taskservice.repository.TaskEmployeeLinkRepository;
 import ru.diasoft.spring.taskservice.repository.TaskRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static ru.diasoft.spring.taskservice.utils.TaskServiceConstants.EMPLOYEE_HAS_NO_TASKS;
 import static ru.diasoft.spring.taskservice.utils.TaskServiceConstants.TASK_STATE_NOT_FOUND;
 
 @Log4j2
@@ -25,6 +32,7 @@ import static ru.diasoft.spring.taskservice.utils.TaskServiceConstants.TASK_STAT
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final TaskEmployeeLinkRepository taskEmployeeLinkRepository;
     private final TaskMapper taskMapper;
 
     /**
@@ -33,8 +41,9 @@ public class TaskServiceImpl implements TaskService {
      * @param request входные данные
      */
     @Override
+    @Transactional
     public CreateTaskResponse createTask(@NonNull CreateTaskRequest request) {
-        final Optional<TaskState> taskState = TaskState.findByState(request.getState());
+        final Optional<TaskState> taskState = TaskState.findBySysName(request.getState());
         if (taskState.isEmpty()) {
             final CreateTaskResponse response = new CreateTaskResponse();
             response.setRetMessage(String.format(TASK_STATE_NOT_FOUND, request.getState()));
@@ -57,10 +66,11 @@ public class TaskServiceImpl implements TaskService {
      * @param state  новое состояние задачи, в которое та должна попасть
      */
     @Override
+    @Transactional
     public BaseResponse moveTask(@NonNull Integer taskId, @NonNull String state) {
         final Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> DomainNotFoundException.id(Task.class, taskId));
-        final Optional<TaskState> taskState = TaskState.findByState(state);
+        final Optional<TaskState> taskState = TaskState.findBySysName(state);
         if (taskState.isEmpty()) {
             return BaseResponse.createFail(String.format(TASK_STATE_NOT_FOUND, state));
         }
@@ -75,6 +85,7 @@ public class TaskServiceImpl implements TaskService {
      * @param taskId ID задачи
      */
     @Override
+    @Transactional
     public BaseResponse deleteTask(@NonNull Integer taskId) {
         if (!taskRepository.existsById(taskId)) {
             throw DomainNotFoundException.id(Task.class, taskId);
@@ -84,9 +95,40 @@ public class TaskServiceImpl implements TaskService {
         return BaseResponse.createSuccess();
     }
 
+    //TODO подумать, что нужно
     @Override
-    public BaseResponse setExecutor(Integer taskId, Integer employeeId) {
+    @Transactional
+    public BaseResponse setExecutor(@NonNull Integer taskId, Integer employeeId) {
+//        if (employeeId == null) {
+//            taskEmployeeLinkRepository.deleteAllByTaskId(taskId);
+//            return BaseResponse.createSuccess();
+//        }
+
         return null;
+    }
+
+    /**
+     * Возвращает информацию о задачах по указанному сотруднику
+     *
+     * @param employeeId ID сотрудника
+     */
+    @Override
+    public GetTasksByEmployeeResponse getTasksByEmployee(@NonNull Integer employeeId) {
+        final List<TaskForGetTasksByEmployeeResponse> tasks = taskRepository.findAllTasksByEmployeeId(employeeId)
+                .stream()
+                .map(taskMapper::fromDomainToTaskForGetTasksByEmployeeResponse)
+                .collect(Collectors.toList());
+        if (tasks.isEmpty()) {
+            final GetTasksByEmployeeResponse response = new GetTasksByEmployeeResponse();
+            response.setRetMessage(String.format(EMPLOYEE_HAS_NO_TASKS, employeeId));
+            return response;
+        }
+        final GetTasksByEmployeeResponse response = GetTasksByEmployeeResponse.builder()
+                .employeeId(employeeId)
+                .tasks(tasks)
+                .build();
+        response.success();
+        return response;
     }
 
 

@@ -34,6 +34,11 @@
                     defaultValueSequenceNext="task_id_seq">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="t_tasks_pk"/>
             </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер задачи">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="title"
                     type="varchar(100)"
                     remarks="Заголовок задачи">

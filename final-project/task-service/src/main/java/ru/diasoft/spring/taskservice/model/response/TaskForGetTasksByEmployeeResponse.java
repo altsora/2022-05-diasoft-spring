@@ -1,4 +1,4 @@
-package ru.diasoft.spring.taskservice.model.request;
+package ru.diasoft.spring.taskservice.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTaskRequest {
+public class TaskForGetTasksByEmployeeResponse {
+    @JsonProperty("id")
+    private Integer id;
+    @JsonProperty("uniqNumber")
+    private Integer uniqNumber;
     @JsonProperty("title")
     private String title;
-    @JsonProperty("sysName")
+    @JsonProperty("state")
     private String state;
 }

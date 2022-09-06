@@ -28,6 +28,12 @@ public class Task {
     private Integer id;
 
     /**
+     * Уникальный номер задачи
+     */
+    @Column(name = "uniq_number")
+    private Integer uniqNumber;
+
+    /**
      * Название задачи
      */
     @Column(name = "title")
