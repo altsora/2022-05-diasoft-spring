@@ -49,13 +49,12 @@
             </column>
             <column name="datetime"
                     type="timestamp"
-                    remarks="Дата и время создания уведомления"
-                    defaultValueComputed="CURRENT_TIMESTAMP">
+                    remarks="Дата и время создания уведомления">
                 <constraints nullable="false"/>
             </column>
-            <column name="value"
+            <column name="message"
                     type="varchar(1000)"
-                    remarks="Содержание уведомления">
+                    remarks="Текст уведомления">
                 <constraints nullable="false"/>
             </column>
         </createTable>

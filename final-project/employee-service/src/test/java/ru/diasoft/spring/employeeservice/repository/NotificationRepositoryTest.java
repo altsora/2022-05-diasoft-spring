@@ -5,38 +5,38 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import ru.diasoft.spring.employeeservice.domain.Employee;
+import ru.diasoft.spring.employeeservice.domain.Notification;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@DisplayName("Тесты репозитория сотрудников EmployeeRepository")
-class EmployeeRepositoryTest {
+@DisplayName("Тесты репозитория уведомлений NotificationRepository")
+class NotificationRepositoryTest {
     @Autowired
     private TestEntityManager em;
 
     @Autowired
-    private EmployeeRepository repo;
+    private NotificationRepository repo;
 
     @Test
     @DisplayName("Сохранение сущности")
     void saveTest() {
-        final Employee domain = Employee.builder()
-                .username("alex")
-                .password("123")
+        final Notification domain = Notification.builder()
+                .employeeId(1)
                 .uniqNumber(999)
-                .firstName("Alex")
-                .lastName("Bob")
-                .middleName("Jack")
-                .active(true)
+                .message("text")
+                .dateTime(LocalDateTime.MIN)
                 .build();
 
         final long countBeforeSave = repo.count();
-        final Employee saved = repo.saveAndFlush(domain);
+        final Notification saved = repo.saveAndFlush(domain);
         final long countAfterSave = repo.count();
 
         assertEquals(countAfterSave, countBeforeSave + 1);
         assertNotNull(saved);
         assertNotNull(saved.getId());
+        assertNotNull(saved.getDateTime());
     }
 }
