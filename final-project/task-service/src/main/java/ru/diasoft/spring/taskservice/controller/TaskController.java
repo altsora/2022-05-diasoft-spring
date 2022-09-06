@@ -35,4 +35,9 @@ public class TaskController {
     public GetTasksByEmployeeResponse getTasksByEmployee(@PathVariable("employeeId") Integer employeeId) {
         return taskService.getTasksByEmployee(employeeId);
     }
+
+    @PostMapping("/{taskId}/employee/executor")
+    public BaseResponse setExecutor(@PathVariable("taskId") Integer taskId, @RequestParam(value = "employeeId", required = false) Integer employeeId) {
+        return taskService.setExecutor(taskId, employeeId);
+    }
 }

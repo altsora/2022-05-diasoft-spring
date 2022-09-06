@@ -18,4 +18,6 @@ public interface EmployeeService {
     SetEmployeeActivityResponse setActivity(Integer employeeId, boolean value);
 
     Integer login(LoginRequest request);
+
+    Boolean employeeExists(Integer employeeId);
 }

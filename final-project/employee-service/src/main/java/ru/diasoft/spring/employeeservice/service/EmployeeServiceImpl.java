@@ -131,4 +131,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findIdByUsernameAndPassword(request.getUsername(), request.getPassword())
                 .orElse(null);
     }
+
+    @Override
+    public Boolean employeeExists(@NonNull Integer employeeId) {
+        return employeeRepository.existsById(employeeId);
+    }
 }

@@ -26,27 +26,32 @@ public class EmployeeController {
         return employeeService.addEmployee(request);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public GetEmployeeByIdResponse getEmployeeById(@PathVariable("id") Integer employeeId) {
+    public GetEmployeeByIdResponse getEmployeeById(@PathVariable("employeeId") Integer employeeId) {
         return employeeService.getEmployeeById(employeeId);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
-    public UpdateEmployeeResponse updateEmployee(@PathVariable("id") Integer employeeId,
+    public UpdateEmployeeResponse updateEmployee(@PathVariable("employeeId") Integer employeeId,
                                                  @RequestBody @Valid UpdateEmployeeRequest request) {
         return employeeService.updateEmployee(employeeId, request);
     }
 
-    @PutMapping("/{id}/activity")
+    @PutMapping("/{employeeId}/activity")
     @ResponseStatus(HttpStatus.OK)
-    public SetEmployeeActivityResponse setActivity(@PathVariable("id") Integer employeeId, @RequestParam("value") boolean value) {
+    public SetEmployeeActivityResponse setActivity(@PathVariable("employeeId") Integer employeeId, @RequestParam("value") boolean value) {
         return employeeService.setActivity(employeeId, value);
     }
 
     @PostMapping("/login")
     public Integer login(@RequestBody LoginRequest request) {
         return employeeService.login(request);
+    }
+
+    @GetMapping("/{employeeId}/exists")
+    public Boolean employeeExists(@PathVariable("employeeId") Integer employeeId) {
+        return employeeService.employeeExists(employeeId);
     }
 }
