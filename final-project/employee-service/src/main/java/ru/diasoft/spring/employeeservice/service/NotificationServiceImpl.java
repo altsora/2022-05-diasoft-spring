@@ -37,7 +37,7 @@ public class NotificationServiceImpl implements NotificationService {
             throw DomainNotFoundException.id(Employee.class, employeeId);
         }
         final Notification domain = Notification.builder()
-                .uniqNumber(uniqNumberNotificationCount)
+                .uniqNumber(++uniqNumberNotificationCount)
                 .employeeId(employeeId)
                 .dateTime(LocalDateTime.now())
                 .message(message)

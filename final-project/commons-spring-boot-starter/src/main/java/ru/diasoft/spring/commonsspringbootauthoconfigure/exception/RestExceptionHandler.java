@@ -12,21 +12,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
+import ru.diasoft.spring.commonsspringbootauthoconfigure.spring.InitLog;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonConstants.*;
 
 @Log4j2
+@InitLog
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    @PostConstruct
-    private void init() {
-        log.info("Initializing ResponseEntityExceptionHandler 'restExceptionHandler'");
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,

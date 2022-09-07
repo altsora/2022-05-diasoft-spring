@@ -7,6 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.feign.EmployeeServiceFeign;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequest;
+import ru.diasoft.spring.frontservice.exception.NoAuthException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
@@ -32,7 +33,13 @@ public class AuthServiceImpl extends HttpServlet implements AuthService {
     }
 
     @Override
+    public boolean isNotUserAuthorize() {
+        return !isUserAuthorize();
+    }
+
+    @Override
     public Integer getAuthorizedUserId() {
+        checkAuth();
         final String sessionId = getSession().getId();
         return activeSessions.get(sessionId);
     }
@@ -52,5 +59,12 @@ public class AuthServiceImpl extends HttpServlet implements AuthService {
     public void removeAuthorizedUser() {
         final String sessionId = getSession().getId();
         activeSessions.remove(sessionId);
+    }
+
+    @Override
+    public void checkAuth() {
+        if (isNotUserAuthorize()) {
+            throw new NoAuthException();
+        }
     }
 }

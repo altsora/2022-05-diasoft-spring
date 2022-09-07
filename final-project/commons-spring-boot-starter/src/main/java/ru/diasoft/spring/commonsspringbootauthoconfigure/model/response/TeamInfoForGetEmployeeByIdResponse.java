@@ -1,4 +1,4 @@
-package ru.diasoft.spring.employeeservice.model.response;
+package ru.diasoft.spring.commonsspringbootauthoconfigure.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

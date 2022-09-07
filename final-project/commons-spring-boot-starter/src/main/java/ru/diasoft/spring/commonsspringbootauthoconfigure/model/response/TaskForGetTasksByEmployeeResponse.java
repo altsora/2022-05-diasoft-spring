@@ -1,4 +1,4 @@
-package ru.diasoft.spring.employeeservice.model.response;
+package ru.diasoft.spring.commonsspringbootauthoconfigure.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamInfoForGetEmployeeByIdResponse {
+public class TaskForGetTasksByEmployeeResponse {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("uniqNumber")
     private Integer uniqNumber;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("active")
-    private boolean active;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("state")
+    private String state;
 }

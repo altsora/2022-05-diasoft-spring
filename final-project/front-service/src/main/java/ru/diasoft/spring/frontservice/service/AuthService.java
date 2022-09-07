@@ -7,9 +7,13 @@ import java.util.Optional;
 public interface AuthService {
     boolean isUserAuthorize();
 
+    boolean isNotUserAuthorize();
+
     Integer getAuthorizedUserId();
 
     Optional<Integer> authorizeUser(LoginRequest request);
 
     void removeAuthorizedUser();
+
+    void checkAuth();
 }

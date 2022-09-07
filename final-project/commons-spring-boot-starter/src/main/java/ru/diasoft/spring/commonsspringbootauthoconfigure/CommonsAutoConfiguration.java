@@ -8,7 +8,7 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.config.AopConfig;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.config.RestExceptionHandlerConfig;
 
 @Configuration
-@ComponentScan("ru.diasoft.spring.commonsspringbootauthoconfigure.exception")
+@ComponentScan("ru.diasoft.spring.commonsspringbootauthoconfigure")
 @Import({AopConfig.class, RestExceptionHandlerConfig.class})
 @EnableFeignClients
 public class CommonsAutoConfiguration {

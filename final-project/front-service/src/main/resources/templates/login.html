@@ -5,8 +5,9 @@
     <title>Авторизация</title>
 </head>
 <body>
-<p th:unless="${userId}">Ошибка авторизации</p>
-<form method="post" th:action="@{/auth/login}" th:object="${request}">
+<h2>Необходимо авторизоваться</h2>
+<p th:unless="${isUserAuth}">Ошибка авторизации</p>
+<form method="post" th:action="@{/auth/login}" th:object="${loginRequest}">
     <input placeholder="Введите имя" required type="text" th:field="*{username}">
     <input placeholder="Введите пароль" required type="text" th:field="*{password}">
     <input type="submit" value="Войти">
