@@ -16,4 +16,11 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
             "FROM TaskEmployeeLink te INNER JOIN FETCH Task t ON te.taskId = t.id " +
             "WHERE te.employeeId = :employeeId")
     List<Task> findAllTasksByEmployeeId(@Param("employeeId") Integer employeeId);
+
+    @Query(nativeQuery = true,
+            value = "SELECT t.* FROM t_tasks t " +
+                    "WHERE NOT EXISTS (" +
+                    "   SELECT 1 FROM t_task_employee_link te WHERE te.task_id = t.id" +
+                    ")")
+    List<Task> findAllTasksWithoutEmployee();
 }

@@ -40,6 +40,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
     private final KafkaProducer kafkaProducer;
     private final EmployeeServiceFeign employeeServiceFeign;
+    private static int uniqNumberTaskCount = 0; //TODO сделать генерацию номера
 
     /**
      * Создание задачи.
@@ -49,15 +50,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public CreateTaskResponse createTask(@NonNull CreateTaskRequest request) {
-        final Optional<TaskState> taskState = TaskState.findBySysName(request.getState());
-        if (taskState.isEmpty()) {
-            final CreateTaskResponse response = new CreateTaskResponse();
-            response.setRetMessage(String.format(TASK_STATE_NOT_FOUND, request.getState()));
-            return response;
-        }
         final Task domain = Task.builder()
                 .title(CommonUtils.trimString(request.getTitle()))
-                .state(taskState.get())
+                .state(TaskState.NEW)
+                .uniqNumber(++uniqNumberTaskCount)
                 .build();
         final Task saved = taskRepository.saveAndFlush(domain);
         final CreateTaskResponse response = taskMapper.fromDomainToCreateTaskResponse(saved);
@@ -187,16 +183,14 @@ public class TaskServiceImpl implements TaskService {
      * @param employeeId ID сотрудника
      */
     @Override
-    public GetTasksByEmployeeResponse getTasksByEmployee(@NonNull Integer employeeId) {
-        final List<TaskForGetTasksByEmployeeResponse> tasks = taskRepository.findAllTasksByEmployeeId(employeeId)
+    public GetTasksByEmployeeResponse getTasksByEmployee(Integer employeeId) {
+        final List<Task> domainTasks = employeeId == null ?
+                taskRepository.findAllTasksWithoutEmployee() :
+                taskRepository.findAllTasksByEmployeeId(employeeId);
+        final List<TaskForGetTasksByEmployeeResponse> tasks = domainTasks
                 .stream()
                 .map(taskMapper::fromDomainToTaskForGetTasksByEmployeeResponse)
                 .collect(Collectors.toList());
-        if (tasks.isEmpty()) {
-            final GetTasksByEmployeeResponse response = new GetTasksByEmployeeResponse();
-            response.setRetMessage(String.format(EMPLOYEE_HAS_NO_TASKS, employeeId));
-            return response;
-        }
         final GetTasksByEmployeeResponse response = GetTasksByEmployeeResponse.builder()
                 .employeeId(employeeId)
                 .tasks(tasks)

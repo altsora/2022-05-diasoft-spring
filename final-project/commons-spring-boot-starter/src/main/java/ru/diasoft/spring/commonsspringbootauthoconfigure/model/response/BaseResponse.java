@@ -28,6 +28,10 @@ public class BaseResponse {
         this.retStatus = true;
     }
 
+    public boolean isSuccess() {
+        return Boolean.TRUE.equals(this.retStatus);
+    }
+
     public static BaseResponse createFail(String retMessage) {
         return new BaseResponse().setRetStatus(false).setRetMessage(retMessage);
     }

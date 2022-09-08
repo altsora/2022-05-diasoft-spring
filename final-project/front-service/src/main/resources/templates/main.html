@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
 </head>
 <body>
 <h2>
@@ -10,30 +16,47 @@
 </h2>
 <br>
 <ul>
-    <li><a th:href="@{/main/tasks}">Мои задачи</a></li>
-    <li>Создать новую задачу</li>
-    <li>Взять/убрать задачу</li>
-    <li><a th:href="@{/auth/logout}">Выйти</a></li>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/tasks}">Показать мои задачи</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/add-task}">Создать новую задачу</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/take-task}">Взять задачу</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/auth/logout}">Выйти</a>
+        </button>
+    </li>
 </ul>
-<br>
+<hr>
+
 <table th:if="${not #lists.isEmpty(tasks)}" border="1">
-    <caption>Список задач:</caption>
+    <caption>Список задач (<span th:text="${#lists.size(tasks)}">0</span> шт.)</caption>
     <tr>
+        <th>№</th>
         <th>Номер</th>
         <th>Название</th>
         <th>Статус</th>
-        <th></th>
     </tr>
-    <tr th:each="task : ${tasks}">
+    <tr th:each="task, stats : ${tasks}">
+        <td th:text="${stats.index + 1}">1</td>
         <td th:text="${task.uniqNumber}">Номер задачи</td>
         <td th:text="${task.title}">Номер задачи</td>
         <td th:text="${task.state}">Статус</td>
-        <td>
-            <form method="post" th:action="@{/main/tasks-list/remove/{taskId}(taskId=${task.id})}">
-                <input type="submit" value="Убрать">
-            </form>
-        </td>
     </tr>
 </table>
+<p th:if="${tasks} and ${#lists.size(tasks) == 0}">Список задач пуст</p>
 </body>
 </html>

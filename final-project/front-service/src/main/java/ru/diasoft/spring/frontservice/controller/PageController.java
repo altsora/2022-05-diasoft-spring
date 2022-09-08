@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 
+import static ru.diasoft.spring.frontservice.utils.FrontServiceConstants.PAGE_INDEX;
+
 @Log4j2
 @Loggable
 @Controller
@@ -13,6 +15,6 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.aop.Loggable;
 public class PageController {
     @GetMapping("/")
     public String index() {
-        return "index";
+        return PAGE_INDEX;
     }
 }

@@ -1,4 +1,4 @@
-package ru.diasoft.spring.taskservice.model.request;
+package ru.diasoft.spring.frontservice.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTaskRequest {
+public class AddTaskRequest {
     @JsonProperty("title")
     private String title;
+    @JsonProperty("meExecutor")
+    private String meExecutor;
 }

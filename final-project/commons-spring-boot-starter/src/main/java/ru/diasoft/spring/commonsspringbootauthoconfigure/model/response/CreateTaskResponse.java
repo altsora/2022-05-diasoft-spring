@@ -1,17 +1,16 @@
-package ru.diasoft.spring.taskservice.model.response;
+package ru.diasoft.spring.commonsspringbootauthoconfigure.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTaskResponse extends BaseResponse {
+public class CreateTaskResponse extends BaseResponse{
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("title")

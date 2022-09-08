@@ -14,8 +14,7 @@ import ru.diasoft.spring.frontservice.service.AuthService;
 
 import java.util.Optional;
 
-import static ru.diasoft.spring.frontservice.utils.FrontServiceConstants.MODEL_IS_USER_AUTH;
-import static ru.diasoft.spring.frontservice.utils.FrontServiceConstants.MODEL_LOGIN_REQUEST;
+import static ru.diasoft.spring.frontservice.utils.FrontServiceConstants.*;
 
 @Log4j2
 @Loggable
@@ -31,17 +30,17 @@ public class AuthController {
         if (userId.isEmpty()) {
             model.addAttribute(MODEL_IS_USER_AUTH, false);
             model.addAttribute(MODEL_LOGIN_REQUEST, new LoginRequest());
-            return "login";
+            return PAGE_LOGIN;
         }
         return "redirect:/main";
     }
 
     @GetMapping("/login")
     public String login(Model model) {
-        if (!authService.isUserAuthorize()) {
+        if (authService.isNotUserAuthorize()) {
             model.addAttribute(MODEL_LOGIN_REQUEST, new LoginRequest());
             model.addAttribute(MODEL_IS_USER_AUTH, true);
-            return "login";
+            return PAGE_LOGIN;
         }
         return "redirect:/main";
     }

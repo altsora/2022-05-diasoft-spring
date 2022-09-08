@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание новой задачи</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
+</head>
+<body>
+<h2>Создание задачи</h2>
+<form method="post" th:action="@{/main/add-task}" th:object="${addTaskRequest}">
+    <input placeholder="Введите название задачи" required type="text" th:field="*{title}">
+    <br>
+    <br>
+    <label>
+        <input type="checkbox" name="meExecutor" th:checked="*{meExecutor}">Сделать меня исполнителем
+    </label>
+    <br>
+    <br>
+    <input type="submit" value="Создать">
+</form>
+<br>
+
+<div th:if="${addTaskResponse}">
+    <p th:if="${addTaskResponse.retStatus}" style="color: green">
+        Новая задача успещно создана под номером <span th:text="${addTaskResponse.uniqNumber}">0</span>.
+    </p>
+    <p th:if="${setExecutorResponse} and ${setExecutorResponse.retStatus}" style="color: green">
+        Эта задача закреплена за Вами.
+    </p>
+    <p th:unless="${addTaskResponse.retStatus}" style="color: red">
+        Не удалось создать задачу. Причина: <span th:text="${addTaskResponse.retMessage}"></span>
+    </p>
+    <p th:if="${setExecutorResponse} and not ${setExecutorResponse.retStatus}" style="color: red">
+        Не удалось закрепить задачу за Вами. Причина: <span th:text="${setExecutorResponse.retMessage}"></span>
+    </p>
+</div>
+
+<hr>
+<button type="button">
+    <a class="ref-button" th:href="@{/main}">Назад</a>
+</button>
+</body>
+</html>
