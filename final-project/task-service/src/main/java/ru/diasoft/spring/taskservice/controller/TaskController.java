@@ -9,6 +9,8 @@ import ru.diasoft.spring.taskservice.model.response.CreateTaskResponse;
 import ru.diasoft.spring.taskservice.model.response.GetTasksByEmployeeResponse;
 import ru.diasoft.spring.taskservice.service.TaskService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tasks")
@@ -17,7 +19,7 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateTaskResponse createTask(@RequestBody CreateTaskRequest request) {
+    public CreateTaskResponse createTask(@RequestBody @Valid CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 

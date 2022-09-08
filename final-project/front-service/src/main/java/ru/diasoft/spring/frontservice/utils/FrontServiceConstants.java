@@ -29,4 +29,6 @@ public class FrontServiceConstants {
     public static final int FIRST_NAME_MAX_SIZE = 50;
     public static final int LAST_NAME_MAX_SIZE = 50;
     public static final int MIDDLE_NAME_MAX_SIZE = 50;
+    public static final int TASK_TITLE_MIN_SIZE = 3;
+    public static final int TASK_TITLE_MAX_SIZE = 100;
 }

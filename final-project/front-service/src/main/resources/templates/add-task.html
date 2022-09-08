@@ -15,6 +15,7 @@
 <form method="post" th:action="@{/main/add-task}" th:object="${addTaskRequest}">
     <input placeholder="Введите название задачи" required type="text" th:field="*{title}">
     <br>
+    <p th:if="${#fields.hasErrors('title')}" th:errorclass="error" th:errors="*{title}" />
     <br>
     <label>
         <input type="checkbox" name="meExecutor" th:checked="*{meExecutor}">Сделать меня исполнителем

@@ -10,4 +10,8 @@ public class TaskServiceConstants {
     public static final String TASK_HAS_NO_ALREADY_EXECUTOR = "На задаче с ID '%s' уже нет исполнителя";
     public static final String EMPLOYEE_BY_ID_NOT_FOUND = "Сотрудник с ID '%s' не найден";
     public static final String TASK_HAS_ALREADY_EXECUTOR = "На задаче с ID '%s' уже установлен исполнитель с ID '%s'";
+
+    public static final int TASK_TITLE_MIN_SIZE = 3;
+    public static final int TASK_TITLE_MAX_SIZE = 100;
+
 }

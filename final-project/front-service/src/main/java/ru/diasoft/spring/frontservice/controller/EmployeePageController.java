@@ -3,6 +3,7 @@ package ru.diasoft.spring.frontservice.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,6 +18,7 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.TaskForG
 import ru.diasoft.spring.frontservice.model.AddTaskRequest;
 import ru.diasoft.spring.frontservice.service.AuthService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.diasoft.spring.frontservice.utils.FrontServiceConstants.*;
@@ -58,9 +60,14 @@ public class EmployeePageController {
     }
 
     @PostMapping("/add-task")
-    public ModelAndView addTaskAction(@ModelAttribute(MODEL_ADD_TASK_REQUEST) AddTaskRequest request,
+    public ModelAndView addTaskAction(@ModelAttribute(MODEL_ADD_TASK_REQUEST) @Valid AddTaskRequest request,
+                                      BindingResult result,
                                       ModelAndView view,
                                       final RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            view.setViewName(PAGE_ADD_TASK);
+            return view;
+        }
         final Integer employeeId = authService.getAuthorizedUserId();
         final CreateTaskRequest createTaskRequest = new CreateTaskRequest(request.getTitle());
         final CreateTaskResponse response = taskServiceFeign.createTask(createTaskRequest);
