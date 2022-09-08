@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Авторизация</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
 </head>
 <body>
 <h2>Необходимо авторизоваться</h2>
@@ -12,5 +18,9 @@
     <input placeholder="Введите пароль" required type="text" th:field="*{password}">
     <input type="submit" value="Войти">
 </form>
+<hr>
+<button type="button">
+    <a class="ref-button" th:href="@{/}">На главную</a>
+</button>
 </body>
 </html>

@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
 </head>
 <body>
 <h1>Добро пожаловать!</h1>
-<a th:href="@{/auth/login}">Авторизация</a>
+<button type="button">
+    <a class="ref-button" th:href="@{/auth/login}">Авторизация</a>
+</button>
+<br>
+<br>
+<button type="button">
+    <a class="ref-button" th:href="@{/auth/registration}">Регистрация</a>
+</button>
 </body>
 </html>

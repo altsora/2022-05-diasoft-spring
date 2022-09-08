@@ -21,7 +21,8 @@ public class TaskEmployeeLink {
      * Суррогатный первичный ключ
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_employee_id_seq")
+    @SequenceGenerator(name = "task_employee_id_seq", sequenceName = "task_employee_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

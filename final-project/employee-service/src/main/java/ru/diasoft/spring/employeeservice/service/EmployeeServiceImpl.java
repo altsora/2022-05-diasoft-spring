@@ -10,16 +10,15 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.exception.DomainNotFoun
 import ru.diasoft.spring.commonsspringbootauthoconfigure.utils.CommonUtils;
 import ru.diasoft.spring.employeeservice.domain.Employee;
 import ru.diasoft.spring.employeeservice.mapper.EmployeeMapper;
-import ru.diasoft.spring.employeeservice.mapper.TeamMapper;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.LoginRequest;
-import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
 import ru.diasoft.spring.employeeservice.model.response.SetEmployeeActivityResponse;
-import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
 import ru.diasoft.spring.employeeservice.utils.Functions;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.diasoft.spring.employeeservice.utils.Constants.EMPLOYEE_USERNAME_EXISTS;
 
@@ -28,10 +27,10 @@ import static ru.diasoft.spring.employeeservice.utils.Constants.EMPLOYEE_USERNAM
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+    private final AtomicInteger uniqNumberEmployeeCount = new AtomicInteger(0);
+
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
-    private final TeamMapper teamMapper;
-    private static int uniqNumberEmployeeCount = 0; //TODO сделать генерацию номера
 
     /**
      * Добавление сотрудника.
@@ -52,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         final Employee domain = employeeMapper.fromAddEmployeeRequestToDomain(request);
         domain.setActive(true);
-        domain.setUniqNumber(++uniqNumberEmployeeCount);
+        domain.setUniqNumber(uniqNumberEmployeeCount.incrementAndGet());
         final Employee saved = employeeRepository.saveAndFlush(domain);
 
         final AddEmployeeResponse response = employeeMapper.fromDomainToAddEmployeeResponse(saved);
@@ -72,29 +71,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         final Employee domain = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> DomainNotFoundException.id(Employee.class, employeeId));
         final GetEmployeeByIdResponse response = employeeMapper.fromDomainToGetEmployeeByIdResponse(domain);
-        response.success();
-        response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
-        return response;
-    }
-
-    /**
-     * Обновление данных сотрудника.
-     *
-     * @param employeeId ID сотрудника
-     * @param request    входные данные
-     * @throws DomainNotFoundException если сотрудник не найден
-     */
-    @Override
-    @Transactional
-    public UpdateEmployeeResponse updateEmployee(@NonNull Integer employeeId, @NonNull UpdateEmployeeRequest request) {
-        final Employee domain = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> DomainNotFoundException.id(Employee.class, employeeId));
-        domain.setFirstName(CommonUtils.trimString(request.getFirstName()));
-        domain.setLastName(CommonUtils.trimString(request.getLastName()));
-        domain.setMiddleName(CommonUtils.trimString(request.getMiddleName()));
-        final Employee saved = employeeRepository.saveAndFlush(domain);
-
-        final UpdateEmployeeResponse response = employeeMapper.fromDomainToUpdateEmployeeResponse(saved);
         response.success();
         response.setFullName(CommonUtils.trimString(Functions.FULL_NAME.apply(domain)));
         return response;
@@ -128,7 +104,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Integer login(@NonNull LoginRequest request) {
-        return employeeRepository.findIdByUsernameAndPassword(request.getUsername(), request.getPassword())
+        return employeeRepository
+                .findIdByUsernameAndPassword(request.getUsername(), request.getPassword())
                 .orElse(null);
     }
 

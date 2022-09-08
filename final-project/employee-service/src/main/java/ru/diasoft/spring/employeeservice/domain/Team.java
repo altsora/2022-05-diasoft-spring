@@ -21,7 +21,8 @@ public class Team implements Serializable {
      * Суррогатный первичный ключ
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_id_seq")
+    @SequenceGenerator(name = "team_id_seq", sequenceName = "team_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

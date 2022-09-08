@@ -19,7 +19,8 @@ public class Notification {
      * Суррогатный первичный ключ
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_id_seq")
+    @SequenceGenerator(name = "notification_id_seq", sequenceName = "notification_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

@@ -24,7 +24,7 @@ class EmployeeRepositoryTest {
         final Employee domain = Employee.builder()
                 .username("alex")
                 .password("123")
-                .uniqNumber(999)
+                .uniqNumber(-999)
                 .firstName("Alex")
                 .lastName("Bob")
                 .middleName("Jack")

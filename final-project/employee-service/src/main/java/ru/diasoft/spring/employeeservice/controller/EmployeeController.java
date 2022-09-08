@@ -5,11 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.diasoft.spring.employeeservice.model.request.AddEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.request.LoginRequest;
-import ru.diasoft.spring.employeeservice.model.request.UpdateEmployeeRequest;
 import ru.diasoft.spring.employeeservice.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.employeeservice.model.response.GetEmployeeByIdResponse;
 import ru.diasoft.spring.employeeservice.model.response.SetEmployeeActivityResponse;
-import ru.diasoft.spring.employeeservice.model.response.UpdateEmployeeResponse;
 import ru.diasoft.spring.employeeservice.service.EmployeeService;
 
 import javax.validation.Valid;
@@ -30,13 +28,6 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public GetEmployeeByIdResponse getEmployeeById(@PathVariable("employeeId") Integer employeeId) {
         return employeeService.getEmployeeById(employeeId);
-    }
-
-    @PutMapping("/{employeeId}")
-    @ResponseStatus(HttpStatus.OK)
-    public UpdateEmployeeResponse updateEmployee(@PathVariable("employeeId") Integer employeeId,
-                                                 @RequestBody @Valid UpdateEmployeeRequest request) {
-        return employeeService.updateEmployee(employeeId, request);
     }
 
     @PutMapping("/{employeeId}/activity")

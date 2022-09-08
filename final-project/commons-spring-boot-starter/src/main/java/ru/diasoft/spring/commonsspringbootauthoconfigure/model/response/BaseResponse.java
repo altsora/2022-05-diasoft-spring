@@ -32,15 +32,15 @@ public class BaseResponse {
         return Boolean.TRUE.equals(this.retStatus);
     }
 
+    public boolean isFail() {
+        return Boolean.FALSE.equals(this.retStatus);
+    }
+
     public static BaseResponse createFail(String retMessage) {
         return new BaseResponse().setRetStatus(false).setRetMessage(retMessage);
     }
 
     public static BaseResponse createSuccess() {
         return new BaseResponse().setRetStatus(true);
-    }
-
-    public static BaseResponse createSuccess(String retMessage) {
-        return createSuccess().setRetMessage(retMessage);
     }
 }
