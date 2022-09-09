@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResponse;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class GetTasksByEmployeeResponse extends BaseResponse {
     @JsonProperty("employeeId")
     private Integer employeeId;

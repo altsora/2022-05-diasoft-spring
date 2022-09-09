@@ -23,16 +23,6 @@ public class TaskController {
         return taskService.createTask(request);
     }
 
-    @PutMapping("/{taskId}/move")
-    public BaseResponse moveTask(@PathVariable("taskId") Integer taskId, @RequestParam("sysNameState") String sysNameState) {
-        return taskService.moveTask(taskId, sysNameState);
-    }
-
-    @DeleteMapping("/{taskId}")
-    public BaseResponse deleteTask(@PathVariable("taskId") Integer taskId) {
-        return taskService.deleteTask(taskId);
-    }
-
     @GetMapping("/employee")
     public GetTasksByEmployeeResponse getTasksByEmployee(@RequestParam(value = "employeeId", required = false) Integer employeeId) {
         return taskService.getTasksByEmployee(employeeId);

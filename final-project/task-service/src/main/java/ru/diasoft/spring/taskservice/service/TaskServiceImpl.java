@@ -26,6 +26,7 @@ import ru.diasoft.spring.taskservice.repository.TaskRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static ru.diasoft.spring.taskservice.utils.TaskServiceConstants.*;
@@ -35,12 +36,13 @@ import static ru.diasoft.spring.taskservice.utils.TaskServiceConstants.*;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
+    private final AtomicInteger uniqNumberTaskCount = new AtomicInteger(0);
+
     private final TaskRepository taskRepository;
     private final TaskEmployeeLinkRepository taskEmployeeLinkRepository;
     private final TaskMapper taskMapper;
     private final KafkaProducer kafkaProducer;
     private final EmployeeServiceFeign employeeServiceFeign;
-    private static int uniqNumberTaskCount = 0; //TODO сделать генерацию номера
 
     /**
      * Создание задачи.
@@ -53,48 +55,12 @@ public class TaskServiceImpl implements TaskService {
         final Task domain = Task.builder()
                 .title(CommonUtils.trimString(request.getTitle()))
                 .state(TaskState.NEW)
-                .uniqNumber(++uniqNumberTaskCount)
+                .uniqNumber(uniqNumberTaskCount.incrementAndGet())
                 .build();
         final Task saved = taskRepository.saveAndFlush(domain);
         final CreateTaskResponse response = taskMapper.fromDomainToCreateTaskResponse(saved);
         response.success();
         return response;
-    }
-
-    /**
-     * Метод переводит задачу в новое состояние.
-     *
-     * @param taskId ID задачи
-     * @param state  новое состояние задачи, в которое та должна попасть
-     */
-    @Override
-    @Transactional
-    public BaseResponse moveTask(@NonNull Integer taskId, @NonNull String state) {
-        final Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> DomainNotFoundException.id(Task.class, taskId));
-        final Optional<TaskState> taskState = TaskState.findBySysName(state);
-        if (taskState.isEmpty()) {
-            return BaseResponse.createFail(String.format(TASK_STATE_NOT_FOUND, state));
-        }
-        task.setState(taskState.get());
-        taskRepository.saveAndFlush(task);
-        return BaseResponse.createSuccess();
-    }
-
-    /**
-     * Удаление задачи.
-     *
-     * @param taskId ID задачи
-     */
-    @Override
-    @Transactional
-    public BaseResponse deleteTask(@NonNull Integer taskId) {
-        if (!taskRepository.existsById(taskId)) {
-            throw DomainNotFoundException.id(Task.class, taskId);
-        }
-
-        taskRepository.deleteById(taskId);
-        return BaseResponse.createSuccess();
     }
 
     /**
@@ -110,8 +76,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public BaseResponse setExecutor(@NonNull Integer taskId, Integer employeeId) {
-        final Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> DomainNotFoundException.id(Task.class, taskId));
         final boolean newEmployeeIsNull = employeeId == null;
         if (!newEmployeeIsNull) {
             final Boolean employeeExists = employeeServiceFeign.employeeExists(employeeId);
@@ -119,6 +83,8 @@ public class TaskServiceImpl implements TaskService {
                 return BaseResponse.createFail(String.format(EMPLOYEE_BY_ID_NOT_FOUND, employeeId));
             }
         }
+        final Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> DomainNotFoundException.id(Task.class, taskId));
 
         final Optional<Integer> currentEmployeeIdOpt = taskEmployeeLinkRepository.findEmployeeIdByTaskId(taskId);
         if (currentEmployeeIdOpt.isPresent()) {
@@ -196,6 +162,7 @@ public class TaskServiceImpl implements TaskService {
                 .tasks(tasks)
                 .build();
         response.success();
+        response.setEmployeeId(employeeId);
         return response;
     }
 

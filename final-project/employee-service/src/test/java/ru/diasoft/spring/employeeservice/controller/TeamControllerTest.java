@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TeamController.class)
 @DisplayName("Тесты контроллера TeamController")
 class TeamControllerTest {
-
     @Autowired
     private MockMvc mvc;
 
