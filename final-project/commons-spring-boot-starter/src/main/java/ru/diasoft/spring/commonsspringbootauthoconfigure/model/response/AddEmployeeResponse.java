@@ -16,7 +16,7 @@ public class AddEmployeeResponse extends BaseResponse {
     @JsonProperty("username")
     private String username;
     @JsonProperty("uniqNumber")
-    private String uniqNumber;
+    private Integer uniqNumber;
     @JsonProperty("firstName")
     private String firstName;
     @JsonProperty("lastName")

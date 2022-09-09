@@ -32,7 +32,8 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}/activity")
     @ResponseStatus(HttpStatus.OK)
-    public SetEmployeeActivityResponse setActivity(@PathVariable("employeeId") Integer employeeId, @RequestParam("value") boolean value) {
+    public SetEmployeeActivityResponse setActivity(@PathVariable("employeeId") Integer employeeId,
+                                                   @RequestParam("value") boolean value) {
         return employeeService.setActivity(employeeId, value);
     }
 

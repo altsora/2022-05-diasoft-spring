@@ -1,5 +1,6 @@
 package ru.diasoft.spring.commonsspringbootauthoconfigure.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -28,10 +29,12 @@ public class BaseResponse {
         this.retStatus = true;
     }
 
+    @JsonIgnore
     public boolean isSuccess() {
         return Boolean.TRUE.equals(this.retStatus);
     }
 
+    @JsonIgnore
     public boolean isFail() {
         return Boolean.FALSE.equals(this.retStatus);
     }

@@ -15,7 +15,7 @@ public class AddTeamResponse extends BaseResponse {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("uniqNumber")
-    private String uniqNumber;
+    private Integer uniqNumber;
     @JsonProperty("name")
     private String name;
 }

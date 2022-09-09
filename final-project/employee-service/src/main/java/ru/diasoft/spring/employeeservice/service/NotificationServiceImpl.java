@@ -14,16 +14,17 @@ import ru.diasoft.spring.employeeservice.repository.EmployeeRepository;
 import ru.diasoft.spring.employeeservice.repository.NotificationRepository;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Log4j2
 @Loggable
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
+    private final AtomicInteger uniqNumberNotificationCount = new AtomicInteger(0);
     private final NotificationRepository notificationRepository;
     private final EmployeeRepository employeeRepository;
     private final NotificationMapper notificationMapper;
-    private static int uniqNumberNotificationCount = 0; //TODO сделать генерацию номера
 
     /**
      * Метод создаёт новое уведомление в базе.
@@ -37,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
             throw DomainNotFoundException.id(Employee.class, employeeId);
         }
         final Notification domain = Notification.builder()
-                .uniqNumber(++uniqNumberNotificationCount)
+                .uniqNumber(uniqNumberNotificationCount.incrementAndGet())
                 .employeeId(employeeId)
                 .dateTime(LocalDateTime.now())
                 .message(message)
