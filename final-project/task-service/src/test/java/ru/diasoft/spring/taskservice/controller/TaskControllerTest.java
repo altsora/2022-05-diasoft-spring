@@ -14,7 +14,6 @@ import ru.diasoft.spring.taskservice.enums.TaskState;
 import ru.diasoft.spring.taskservice.model.request.CreateTaskRequest;
 import ru.diasoft.spring.taskservice.model.response.CreateTaskResponse;
 import ru.diasoft.spring.taskservice.model.response.GetTasksByEmployeeResponse;
-import ru.diasoft.spring.taskservice.model.response.TaskForGetTasksByEmployeeResponse;
 import ru.diasoft.spring.taskservice.service.TaskService;
 
 import java.util.Collections;
