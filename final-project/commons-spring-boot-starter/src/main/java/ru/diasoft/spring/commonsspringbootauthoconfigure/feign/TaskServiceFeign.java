@@ -8,10 +8,8 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.BaseResp
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.CreateTaskResponse;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.GetTasksByEmployeeResponse;
 
-@FeignClient(
-        name = "${services.task-service.name:task-service}",
-        url = "${services.task-service.url:http://localhost:7081}")
 @Loggable
+@FeignClient(name = "task-service")
 public interface TaskServiceFeign {
     @GetMapping("/tasks/employee")
     GetTasksByEmployeeResponse getTasksByEmployee(@RequestParam(value = "employeeId", required = false) Integer employeeId);

@@ -11,10 +11,8 @@ import ru.diasoft.spring.commonsspringbootauthoconfigure.model.request.LoginRequ
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.AddEmployeeResponse;
 import ru.diasoft.spring.commonsspringbootauthoconfigure.model.response.GetEmployeeByIdResponse;
 
-@FeignClient(
-        name = "${services.employee-service.name:employee-service}",
-        url = "${services.employee-service.url:http://localhost:7082}")
 @Loggable
+@FeignClient(name = "employee-service")
 public interface EmployeeServiceFeign {
     @PostMapping("/employees/login")
     Integer login(@RequestBody LoginRequest request);
