@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="task-employee-link-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="task_employee_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей task_employee_id_seq</comment>
+
+        <createSequence sequenceName="task_employee_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+
+    <changeSet id="task-employee-link-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="task_employee_id_seq"/>
+            <not>
+                <tableExists tableName="t_task_employee_link"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица связей задач и сотрудников</comment>
+
+        <createTable tableName="t_task_employee_link"
+                     remarks="Таблица связей задач и сотрудников">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="task_employee_id_seq">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="t_task_employee_link_pk"/>
+            </column>
+            <column name="task_id"
+                    type="integer"
+                    remarks="ID задачи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id"
+                    type="integer"
+                    remarks="ID сотрудника">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="task-employee-link-003" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_task_employee_link" columnName="task_id"/>
+        </preConditions>
+
+        <comment>Создан индекс t_task_employee_link_k0</comment>
+
+        <createIndex tableName="t_task_employee_link" indexName="t_task_employee_link_k0" unique="true">
+            <column name="task_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="task-employee-link-004" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_task_employee_link" columnName="task_id"/>
+            <columnExists tableName="t_tasks" columnName="id"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_task_employee_link_task"/>
+            </not>
+        </preConditions>
+
+        <comment>Добавлен внешний ключ fk_task_employee_link_task</comment>
+
+        <addForeignKeyConstraint baseTableName="t_task_employee_link"
+                                 baseColumnNames="task_id"
+                                 constraintName="fk_task_employee_link_task"
+                                 onDelete="CASCADE"
+                                 referencedTableName="t_tasks"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="task-employee-link-005" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <columnExists tableName="t_task_employee_link" columnName="employee_id"/>
+            <columnExists tableName="t_employees" columnName="id"/>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_task_employee_link_employee"/>
+            </not>
+        </preConditions>
+
+        <comment>Добавлен внешний ключ fk_task_employee_link_employee</comment>
+
+        <addForeignKeyConstraint baseTableName="t_task_employee_link"
+                                 baseColumnNames="employee_id"
+                                 constraintName="fk_task_employee_link_employee"
+                                 onDelete="CASCADE"
+                                 referencedTableName="t_employees"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    
+
+
+</databaseChangeLog>

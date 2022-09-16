@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="task-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="task_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей task_id_seq</comment>
+
+        <createSequence sequenceName="task_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="task-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="task_id_seq"/>
+            <not>
+                <tableExists tableName="t_tasks"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица задач</comment>
+
+        <createTable tableName="t_tasks" remarks="Таблица задач">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="task_id_seq">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_tasks_pk"/>
+            </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер задачи">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="title"
+                    type="varchar(100)"
+                    remarks="Заголовок задачи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state"
+                    type="varchar(30)"
+                    remarks="Состояние задачи">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

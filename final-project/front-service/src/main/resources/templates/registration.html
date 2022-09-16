@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <form method="post" th:action="@{/auth/registration}" th:object="${registrationRequest}">
+        <input placeholder="Придумайте логин" required type="text" th:field="*{username}">
+        <br>
+        <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}" />
+        <br>
+        <input placeholder="Придумайте пароль" required type="text" th:field="*{password}">
+        <br>
+        <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" />
+        <br>
+        <input placeholder="Введите Ваше имя" required type="text" th:field="*{firstName}">
+        <br>
+        <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}" />
+        <br>
+        <input placeholder="Введите Вашу фамилию" required type="text" th:field="*{lastName}">
+        <br>
+        <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}" />
+        <br>
+        <input placeholder="Введите Ваше отчество" required type="text" th:field="*{middleName}">
+        <br>
+        <p th:if="${#fields.hasErrors('middleName')}" th:errorclass="error" th:errors="*{middleName}" />
+        <br>
+        <input type="submit" value="Зарегистрироваться">
+        <div th:if="${registrationResponse} and not ${registrationResponse.retStatus}">
+            Ошибка регистрации. Причина: <span th:text="${registrationResponse.retMessage}"></span>
+        </div>
+    </form>
+    <hr>
+    <button type="button">
+        <a class="ref-button" th:href="@{/}">На главную</a>
+    </button>
+</body>
+</html>

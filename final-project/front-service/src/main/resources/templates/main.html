@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
+</head>
+<body>
+<h2>
+    Добрый день, <span th:if="${fullName}" th:text="${fullName}">анон</span>!
+</h2>
+<br>
+<ul>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/tasks}">Показать мои задачи</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/add-task}">Создать новую задачу</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/main/take-task}">Взять задачу</a>
+        </button>
+    </li>
+    <br>
+    <li>
+        <button type="button">
+            <a class="ref-button" th:href="@{/auth/logout}">Выйти</a>
+        </button>
+    </li>
+</ul>
+<hr>
+
+<table th:if="${not #lists.isEmpty(tasks)}" border="1">
+    <caption>Список задач (<span th:text="${#lists.size(tasks)}">0</span> шт.)</caption>
+    <tr>
+        <th>№</th>
+        <th>Номер</th>
+        <th>Название</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="task, stats : ${tasks}">
+        <td th:text="${stats.index + 1}">1</td>
+        <td th:text="${task.uniqNumber}">Номер задачи</td>
+        <td th:text="${task.title}">Номер задачи</td>
+        <td th:text="${task.state}">Статус</td>
+    </tr>
+</table>
+<p th:if="${tasks} and ${#lists.size(tasks) == 0}">Список задач пуст</p>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="employee-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="employee_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей employee_id_seq</comment>
+
+        <createSequence sequenceName="employee_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="employee-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="employee_id_seq"/>
+            <not>
+                <tableExists tableName="t_employees"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица сотрудников</comment>
+
+        <createTable tableName="t_employees" remarks="Таблица сотрудников">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="employee_id_seq">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_employees_pk"/>
+            </column>
+            <column name="username"
+                    type="varchar(50)"
+                    remarks="Электронный адрес сотрудника">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password"
+                    type="varchar(20)"
+                    remarks="Пароль сотрудника">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер сотрудника">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name"
+                    type="varchar(50)"
+                    remarks="Имя сотрудника">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name"
+                    type="varchar(50)"
+                    remarks="Фамилия сотрудника">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name"
+                    type="varchar(50)"
+                    remarks="Отчество сотрудника">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active"
+                    type="boolean"
+                    remarks="Флаг: сотрудник активен">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

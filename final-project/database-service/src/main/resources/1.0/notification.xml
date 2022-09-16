@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="notification-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <not>
+                <sequenceExists sequenceName="notification_id_seq"/>
+            </not>
+        </preConditions>
+
+        <comment>Создание генератора последовательностей notification_id_seq</comment>
+
+        <createSequence sequenceName="notification_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="notification-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <sequenceExists sequenceName="notification_id_seq"/>
+            <not>
+                <tableExists tableName="t_notifications"/>
+            </not>
+        </preConditions>
+
+        <comment>Создана таблица уведомлений сотрудников</comment>
+
+        <createTable tableName="t_notifications" remarks="Таблица уведомлений сотрудников">
+            <column name="id"
+                    type="integer"
+                    remarks="Суррогатный первичный ключ"
+                    defaultValueSequenceNext="notification_id_seq">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="t_notifications_pk"/>
+            </column>
+            <column name="uniq_number"
+                    type="integer"
+                    remarks="Уникальный номер уведомления">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="employee_id"
+                    type="integer"
+                    remarks="ID сотрудника">
+                <constraints nullable="false"
+                             foreignKeyName="fk_notification_employee"
+                             referencedTableName="t_employees"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="datetime"
+                    type="timestamp"
+                    remarks="Дата и время создания уведомления">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message"
+                    type="varchar(1000)"
+                    remarks="Текст уведомления">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

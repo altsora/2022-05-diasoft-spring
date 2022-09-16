@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор задачи</title>
+    <style>
+        .ref-button {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    </style>
+</head>
+<body>
+<h2>Выберите себе одну или несколько задач</h2>
+
+<h3>Доступные задачи</h3>
+<table th:if="${not #lists.isEmpty(availableTasks)}" border="1">
+    <tr>
+        <th>№</th>
+        <th>Номер</th>
+        <th>Название</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="task, stats : ${availableTasks}">
+        <td th:text="${stats.index + 1}">1</td>
+        <td th:text="${task.uniqNumber}">Номер задачи</td>
+        <td th:text="${task.title}">Номер задачи</td>
+        <td th:text="${task.state}">Статус</td>
+        <td>
+            <!-- Передача в параметрах запроса -->
+            <form th:method="post" th:action="@{/main/take-task}">
+                <button type="submit" th:name="taskId" th:value="${task.id}">Взять</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<p th:if="${availableTasks} and ${#lists.size(availableTasks) == 0}">Список задач пуст</p>
+<div th:if="${setExecutorResponse} and not ${setExecutorResponse.retStatus}">
+    Не удалось закрепить задачу за Вами. Причина: <span th:text="${setExecutorResponse.retMessage}"></span>
+</div>
+
+<h3>Мои задачи</h3>
+<table th:if="${not #lists.isEmpty(tasks)}" border="1">
+    <tr>
+        <th>№</th>
+        <th>Номер</th>
+        <th>Название</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="task, stats : ${tasks}">
+        <td th:text="${stats.index + 1}">1</td>
+        <td th:text="${task.uniqNumber}">Номер задачи</td>
+        <td th:text="${task.title}">Номер задачи</td>
+        <td th:text="${task.state}">Статус</td>
+        <td>
+            <!-- Передача в URI -->
+            <form th:method="delete" th:action="@{/main/remove-task/{taskId}(taskId=${task.id})}">
+                <input type="submit" value="Убрать" style="background: #ff7474">
+            </form>
+        </td>
+    </tr>
+</table>
+<p th:if="${tasks} and ${#lists.size(tasks) == 0}">Список задач пуст</p>
+
+<hr>
+<button type="button">
+    <a class="ref-button" th:href="@{/main}">Назад</a>
+</button>
+</body>
+</html>

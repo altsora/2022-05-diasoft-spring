@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="load-data-001" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_employees"/>
+            <columnExists tableName="t_employees" columnName="username"/>
+            <columnExists tableName="t_employees" columnName="password"/>
+            <columnExists tableName="t_employees" columnName="uniq_number"/>
+            <columnExists tableName="t_employees" columnName="first_name"/>
+            <columnExists tableName="t_employees" columnName="last_name"/>
+            <columnExists tableName="t_employees" columnName="middle_name"/>
+            <columnExists tableName="t_employees" columnName="is_active"/>
+        </preConditions>
+
+        <comment>Загрузка сотрудников</comment>
+
+        <sql>
+            INSERT INTO t_employees (username, password, uniq_number, first_name, last_name, middle_name, is_active) VALUES
+            ('emp1', '12345', '-1', 'Иван', 'Иванов', 'Иванович', false),
+            ('emp2', '12345', '-2', 'Пётр', 'Петров', 'Петров', false),
+            ('emp3', '12345', '-3', 'Александр', 'Александров', 'Александрович', false);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-002" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_teams"/>
+            <columnExists tableName="t_teams" columnName="name"/>
+            <columnExists tableName="t_teams" columnName="uniq_number"/>
+            <columnExists tableName="t_teams" columnName="is_active"/>
+        </preConditions>
+
+        <comment>Загрузка команд</comment>
+
+        <sql>
+            INSERT INTO t_teams (name, uniq_number, is_active) VALUES
+            ('Команда №1', -1, true),
+            ('Команда №2', -2, false);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-003" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_team_employee_link"/>
+            <columnExists tableName="t_team_employee_link" columnName="team_id"/>
+            <columnExists tableName="t_team_employee_link" columnName="employee_id"/>
+        </preConditions>
+
+        <comment>Загрузка сотрудников в команды</comment>
+
+        <sql>
+            INSERT INTO t_team_employee_link (team_id, employee_id) VALUES
+            (1, 1),
+            (1, 2);
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-004" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_tasks"/>
+            <columnExists tableName="t_tasks" columnName="title"/>
+        </preConditions>
+
+        <comment>Загрузка задач</comment>
+
+        <sql>
+            INSERT INTO t_tasks (uniq_number, title, state) VALUES
+            (-1, 'Задача №1', 'Зарегистрировано'),
+            (-2, 'Задача №2', 'В работе'),
+            (-3, 'Задача №3', 'Завершено');
+        </sql>
+    </changeSet>
+
+    <changeSet id="load-data-005" author="altsora" context="update" runInTransaction="false"
+               objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+        <preConditions onFail="HALT">
+            <tableExists tableName="t_task_employee_link"/>
+            <columnExists tableName="t_task_employee_link" columnName="task_id"/>
+            <columnExists tableName="t_task_employee_link" columnName="employee_id"/>
+        </preConditions>
+
+        <comment>Загрузка связей Задача-Сотрудник</comment>
+
+        <sql>
+            INSERT INTO t_task_employee_link (task_id, employee_id) VALUES
+            (1, 1),
+            (2, 1);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
