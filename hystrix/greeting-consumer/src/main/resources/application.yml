@@ -1,0 +1,9 @@
+server:
+  port: 7082
+
+greeting-producer:
+  url: http://localhost:8080
+
+spring:
+  application:
+    name: greeting-consumer
